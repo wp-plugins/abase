@@ -1,6 +1,6 @@
 === ABASE ===
 Contributors: richhalverson
-Donate link: 
+Donate link: http://abase.com
 Tags: abase, sql, query, shortcode, mysql, database, email
 Requires at least: 3.3
 Tested up to: 3.5.2

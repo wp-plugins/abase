@@ -3,13 +3,16 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Display a table or display a record. Short code:  [abase ack="?" alink="?" center="?" cols="?" columns="?" database="?" db="?" echo="?" elements="?" emailbcc="?" emailcc="?" emailfrom="?" emailsubject="?" emailto="?" fields="?" files="?" form="?" from="?" group="?" images="?" insert="?" limit="?" notitle="?" order="?" password="?" required="?" right="?" rlink="?" rownum="?" search="?" select="?" sql="?" style="?" table="?" update="?" where="?"]. Parameters explained and database host, name, user and password setup in Settings (link at left).
-Version: 1.13.7.19
+Version: 1.13.7.19.1
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv3. See http://www.gnu.org/licenses/gpl.html
 */
 
 // WordPress database fields for [ABASE ] and predecessor [bus311-table-display ] are prefixed with 'bus311mtd_' (e.g., in wp_options table)
+
+// require 'plugin-updates/plugin-update-checker.php';
+// $MyUpdateChecker = new PluginUpdateChecker('http://abase.com/plugins/abase.json',__FILE__,'abase');
 
 
 add_action( 'admin_menu', 'table_display_plugin_menu' );
