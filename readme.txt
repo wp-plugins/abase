@@ -12,19 +12,16 @@ MySQL interface. Create forms to insert, update and search. Embed tables or sing
 
 == Description ==
 
-This plugin provides the ability to add MySQL forms and reports to your WordPress pages. Forms can be created for searching, inserting, updating or deleting database records. Reports can consist of table view, record view or single value outputs embedded within a Wordpress page.
-<P>
-Tables can contain foreign keys using the InnoDB Storage Engine and links are automatic. Records can be individually passworded. An ABASE output can be specified as an email. A closing [/abase] shortcode allows additional text content provided with the output, a feature useful for emails.
-<P>
-Files uploaded are stored in a separately specified directory and referenced in cells.
+The ABASE shortcode accesses a MySQL database without having to code PHP. Over 30 optional attribute values specify whether a shortcode on a page is replaced with an HTML input form or an SQL query output. Forms to search, insert, update or delete records are easy to specify. Output can be a formatted value, table, or email. ABASE supports file uploads, images, record passwords and foreign keys.
+
 <h3>Shortcode</h3>
-An ABASE shortcode looks as follows with optional attribtes.
+The ABASE shortcode with a list of all the optional attributes is shown next. Each attribute is described in detail below.
 <P>
-[abase ack="?" alink="?" center="?" cols="?" columns="?" database="?" db="?" echo="?" elements="?" emailbcc="?" emailcc="?" emailfrom="?" emailsubject="?" emailto="?" fields="?" files="?" form="?" from="?" group="?" images="?" insert="?" limit="?" notitle="?" order="?" password="?" required="?" right="?" rlink="?" rownum="?" search="?" select="?" sql="?" style="?" table="?" update="?" where="?" /]&lt;content&gt;[/abase]
+[abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
 <P>
-The question mark represents a parameter value or a list of values separated by commas (,). Empty fields need not be specified. Using the shortcode with no attributes ([abase]) lists the tables in the current database. Otherwise, either the <B>sql</B>, <B>from</B>, or <B>table</B> attribute is used to specify part or all of a database operation. The attribute designators must be lower case.
+Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <B>sql</B>, <B>from</B>, or <B>table</B> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <B>emailto</B> attribute. The attribute names must be lower case.
 <P>
-Use of trailing "/", &lt;content&gt; and "[/abase]" is optional unless &lt;content&gt; is specified. The shortcode name "abase" can be all lower-case or all upper-case but not mixed case. Each functions identically but are treated separately so a closing shortcode must be case identical. For example [ABASE sql="SHOW TABLES"] and [abase sql="SHOW TABLES"] are identical and both show the tables in the database, however would be different when including &lt;content&gt;. This allows embedding of one tag within the content field of another.
+ABASE shortcodes can also be of the form [abase ...]&lt;content&gt;[/abase]. In this form, &lt;content&gt; will be displayed above what [abase ...] produces. The shortcode name "abase" can be all lower-case or all upper-case but not mixed case. Each functions identically but are treated separately. Note that when including a closing shortcode, it must be case identical. &lt;content&gt; can include ABASE tags as long as the alternate case is used. Embedding shortcodes in content is useful when using ABASE to send emails from your website.
 <h3>Databases</h3>
 ABASE can connect to up to 3 databases, numbered 1, 2 and 3. (In <nobr>Settings->ABASE for MySQL.</nobr> Expand to full settings.) ABASE shortcodes default to using database 1. A db="1", db="2" or db="3" attribute in a shortcode will change the default database for this and the remaining shortcodes on the page. Therefore if the page uses database 2, you only need to specify [abase db="2"] in the first shortcode, then not specify a <B>db</B> attribute in any of the remaining shortcodes on that page.
 <P>
@@ -38,15 +35,15 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>center</strong> - center=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more table columns to center when displaying.
 	<li><strong>cols</strong> - cols=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed as a table. Two or more records to be displayed are required. Designed to be used in conjunction with fields specification. See &lt;field_spec&gt; below under <B>fields</B>.
 	<li><strong>columns</strong> - columns=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the columns to be displayed in a table. Zero or more records will be displayed. See &lt;field_spec&gt; below under <B>fields</B>.
-	<li><strong>database</strong> - database="?" Change default database. Choose database 1, 2  or 3 as specified in Settings. Exactly the same as db (next).
-	<li><strong>db</strong> - db="?" Change default database. Same as database.
+	<li><strong>database</strong> - database="" Change default database. Choose database 1, 2  or 3 as specified in Settings. Exactly the same as db (next).
+	<li><strong>db</strong> - db="" Change default database. Same as database.
 	<li><strong>echo</strong> - echo="&lt;color&gt;" will display (i.e., echo) the shortcode in the specified HTML &lt;color&gt; (e.g., echo="red").
 	<li><strong>elements</strong> - elements=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more fields in a form with form elements for either searching, adding to or updating the database.
-	<li><strong>emailbcc</strong> - emailbcc="?" specify blind copy email address(es). Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
-	<li><strong>emailcc</strong> - emailcc="?" specify copy email address(es). Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
-	<li><strong>emailfrom</strong> - emailfrom="?" specify from email address. Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
-	<li><strong>emailsubject</strong> - emailsubject="?" specify email subject. emailto must be specified to send a email.
-	<li><strong>emailto</strong> - emailto="?" specify email recipient. Either a specific email address or a column name that contains an email address. Only one email can be sent per shortcode execution.
+	<li><strong>emailbcc</strong> - emailbcc="" specify blind copy email address(es). Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
+	<li><strong>emailcc</strong> - emailcc="" specify copy email address(es). Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
+	<li><strong>emailfrom</strong> - emailfrom="" specify from email address. Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
+	<li><strong>emailsubject</strong> - emailsubject="" specify email subject. emailto must be specified to send a email.
+	<li><strong>emailto</strong> - emailto="" specify email recipient. Either a specific email address or a column name that contains an email address. Only one email can be sent per shortcode execution.
 	<li><strong>fields</strong> - fields=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed in record view. Record view is a two column table with the field names in the first column and the values in the second column.
 		<ul><li>Meta language: terms in parentheses are optional, vertical bar (|) - OR operator. (Exception - vertical bar (|) preceded &lt;foreign_column&gt;.)
 			<li>&lt;field_spec&gt; ::= ( &lt;column_title&gt;^ ) &lt;column_name&gt; ( |&lt;foreign_column&gt; ) ( ! ( '( &lt;element_type&gt; &lt;space&gt; ) &lt;element_style&gt;' ) ) ( [&gt;|&gt;=|=|&lt;=|&lt;|!=] ( % ) &lt;operand&gt; ) ( % ) ( $ ( &lt;button_value&gt; ) )
@@ -77,11 +74,11 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>from</strong> - Specifies the table_references clause in the MySQL SELECT statement. Default is table specified.
 	<li><strong>group</strong> - Specifies the GROUP BY clause and can include a HAVING part.
 	<li><strong>images</strong> - images=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns that will contain URLs of uploaded images. Similar to <B>files</B> except when an <B>images</B> column is displayed, it is displayed as an HTML image tag with the cell content defining the image source. The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <B>images</B> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. An <B>images</B> column field type should be varchar(255).
-	<li><strong>insert</strong> - insert="?" (depreciated. Use form="insert".)
+	<li><strong>insert</strong> - insert="" (depreciated. Use form="insert".)
 	<li><strong>limit</strong> - Specifies a LIMIT clause.
 	<li><strong>notitle</strong> - notitle="1" will cause the table in a cols="" or columns="" specification to display without the column titles.
 	<li><strong>order</strong> - Specifies the ORDER BY clause.
-	<li><strong>password</strong> - password="?" specify password field. Password entry and match is required to update or delete table record.
+	<li><strong>password</strong> - password="" specify password field. Password entry and match is required to update or delete table record.
 	<li><strong>required</strong> - required=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns in an insert or update form that must have a filled in value or the submit will not be accepted. An error alert message will appear.
 	<li><strong>right</strong> - right=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns to right justify.
 	<li><strong>rlink</strong> - rlink=" &lt;column&gt; ( , &lt;url&gt; ( , &lt;target&gt; ) )" Record link. Link which specifies the primary index &lt;name&gt;=&lt;value&gt; pair in query string. Used to display a single record in the database.
@@ -91,12 +88,12 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 			<li>&lt;target&gt; specifies the target window for the link (e.g., target="_blank" will open a new browser window.
 		</ul>
 	<li><strong>rownum</strong> - rownum="1" will add line numbers to the display tables.
-	<li><strong>search</strong> - search="?" (depreciated. Use form="search".)
+	<li><strong>search</strong> - search="" (depreciated. Use form="search".)
 	<li><strong>select</strong> - Specifies the select_expr clause in the MySQL SELECT statement. Default is * (all columns).
 	<li><strong>sql</strong> - Specifies a complete MySQL statement to be executed.
 	<li><strong>style</strong> - This will specify a style="" attribute for the table that encloses the shortcode display.
 	<li><strong>table</strong> - Specifies the database table to be searched or updated.
-	<li><strong>update</strong> - update="?" (depreciated. Use form="update".)
+	<li><strong>update</strong> - update="" (depreciated. Use form="update".)
 	<li><strong>where</strong> - Specifies the where_condition clause in the MySQL SELECT statement.
 </ul>
 <h3>Displaying Fields</h3>
@@ -107,6 +104,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 <li>Use fields="&lt;field_spec&gt; ( , &lt;field_spec&gt; )" to display one record in record view.
 <li>cols="" and fields="" can be used in the same shortcode.
 </ul>
+
 
 == Installation ==
 
@@ -266,14 +264,21 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.0 =
+
+Documentation corrections and clarifications. New versioning for WordPress.
+
 = 1.13.7.19 =
 
 First version available through WordPress.
 
 == Upgrade notice ==
 
+= 2.0 =
+
+Documentation corrections and clarifications. New versioning for WordPress
+
 = 1.13.7.19 =
 
 First version available through WordPress.
-
 
