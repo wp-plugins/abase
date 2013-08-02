@@ -2,8 +2,8 @@
 /*
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
-Description: Display a table or display a record. Short code:  [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. Parameters explained and database host, name, user and password setup for up to 3 databases in Settings (link at left).
-Version: 2.0
+Description: Create a form, display a table or send an email. Short code:  [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
+Version: 2.0.1
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -344,7 +344,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$full_short_code=$short_code;
 	$complete_empty_short_code=$short_code;
 
-	if($pval>1){$full_short_code.=$pval;};
+//	if($pval>1){$full_short_code.=$pval;};
 	$concatenated_values='';
 	$concatenated_values_except_echo='';
 	$concatenated_values_except_db='';
@@ -377,7 +377,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$GLOBALS['bus311mtd_page_shortcodes'].='#<B>'.$GLOBALS['bus311mtd_instance'].'.</B> '.htmlspecialchars($full_short_code).'<BR>';
 
 	$sup_db_in='';
-	if($db_in>'1'){$sup_db_in="<sup> $db_in</sup>";};
+	if($db_in>'1' && $pval<2){$sup_db_in="<sup> $db_in</sup>";};
 
 
 	if($cols_in=='' && $columns_in=='' && $fields_in==''){
@@ -899,7 +899,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			if($db_list>''){
 				$top_output.=")<BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains tables:<ol><li>$db_list</ol>";
 			}else{
-				$top_output.=")<BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains no tables.";
+				$top_output.=")<BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains no tables.<BR>";
 			};
 //			$top_output.="<BR>At minimum, attribute <STRONG>sql=\"...\"</STRONG>, <STRONG>table=\"...\"</STRONG> or <STRONG>from=\"...\"</STRONG> must be specified.<BR>";
 //			$top_output.="Click <nobr><STRONG><A HREF='/wp-admin/options-general.php?page=".$GLOBALS['bus311mtd_Settings_Page_Slug']."' target='_blank' style='color:$error_color;'>".$GLOBALS['bus311mtd_Settings_Option_Text']."</A></STRONG> under <STRONG>Settings</STRONG> in the WordPress Admin section for more information using ABASE.</nobr><BR>";
@@ -942,13 +942,13 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	}else if($echo_in=='1'){
 		$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.htmlspecialchars($short_code);
 		if($error_string>''){$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.'SHORTCODE ERROR: '.substr($error_string,2).'<BR>';};
-		if($db_in=='2' || $db_in=='3'){$top_output.='<sup> ('.$db_in.')</sup>';};
+		if($pval<2 && ($db_in=='2' || $db_in=='3')){$top_output.='<sup> ('.$db_in.')</sup>';};
 		$top_output.="<BR>";
 	}else if($echo_in=='99'){
 		$top_output.="<font style='color:$error_color; background-color: white;'>";
 		if($error_string>''){$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.'SHORTCODE ERROR: '.substr($error_string,2).'<BR>';};
 		$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.htmlspecialchars($short_code);
-		if($db_in=='2' || $db_in=='3'){$top_output.='<sup> ('.$db_in.')</sup>';};
+		if($pval<2 && ($db_in=='2' || $db_in=='3')){$top_output.='<sup> ('.$db_in.')</sup>';};
 		$top_output.="<BR>".$sqlQuery.$debug_string;
 		$top_output.="<BR>";
 	}else if(strlen($echo_in)>1){
@@ -956,7 +956,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		$top_output.="<font style='color:$echo_in; background-color: white;'>";
 		if($error_string>''){$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.'SHORTCODE ERROR: '.substr($error_string,2).'<BR>';};
 		$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.htmlspecialchars($short_code);
-		if($db_in=='2' || $db_in=='3'){$top_output.='<sup> ('.$db_in.')</sup>';};
+		if($pval<2 && ($db_in=='2' || $db_in=='3')){$top_output.='<sup> ('.$db_in.')</sup>';};
 		$top_output.='</font>';
 		$top_output.="<BR>";
 	};

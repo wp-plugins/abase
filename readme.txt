@@ -3,7 +3,7 @@ Contributors: richhalverson
 Donate link: http://abase.com
 Tags: abase, sql, query, shortcode, mysql, database, email
 Requires at least: 3.3
-Tested up to: 3.5.2
+Tested up to: 3.6
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -122,7 +122,7 @@ Putting "[abase]" on a page will display the current ABASE version, the default 
 
 = What are all these attributes? Where's a ABASE reference guide? =
 
-In the WordPress Admin section, click Settings on the left, and then "ABASE for MySQL." This is where you set the database and user. Below that is the most up-to-date reference guide for ABASE.
+From the Details screen before you install ABASE, complete shortcode and attribute documentation can be found in the Description section. Once installed, from the WordPress Admin section, click Settings on the left, and then "ABASE for MySQL." This is also where you set the database and user. Below that is the most up-to-date reference guide for ABASE.
 
 = How do I know that ABASE is installed properly? =
 
@@ -132,7 +132,7 @@ Another way is to place the shortcode [abase] in a page or post and it will disp
 
 = How many ABASE shortcodes can I use on the same page? =
 
-There is no limit. Note that a shortcode [abase] is different than [ABASE]. This is important if you embed an ABASE shortcode within another, e.g., [abase] ... [ABASE /] ... [/abase] should work.
+There is no limit. Note that a shortcode [abase] is different than [ABASE]. This is important if you embed an ABASE shortcode within another, e.g., [ABASE] ... [abase /] ... [/ABASE] works.
 
 = Where do I set the database and user? =
 
@@ -140,7 +140,7 @@ In the WordPress Admin menu, click Settings on the left, and the ABASE for MySQL
 
 = How do I create a new database? =
 
-This step is performed outside ABASE. If you have cPanel, you can create a new database using the MySQL Databases or MySQL Database Wizard cPanel applications.
+This step is performed outside ABASE. If you have cPanel, you can create a new database using the MySQL Databases or MySQL Database Wizard cPanel applications. Otherwise you can use the default WordPress database and create your own tables using the SQL CREATE TABLE statement.
 
 = I've created a new database but [abase] connects to a different database. Where do I change this? =
 
@@ -154,7 +154,7 @@ You can use phpMyAdmin, which is available in cPanel. You can also use the CREAT
 
 For example, shortcode:
 
-[abase sql="CREATE TABLE employees (employee_id int(11) NOT NULL AUTO_INCREMENT, first_name varchar(100) NOT NULL, last_name varchar(100) NOT NULL, PRIMARY KEY (`id`))"]
+[abase sql="CREATE TABLE employees (`employee_id` int(11) NOT NULL AUTO_INCREMENT, `first_name` varchar(100) NOT NULL, `last_name` varchar(100) NOT NULL, PRIMARY KEY (`employee_id`))"]
 
 will create a table named 'employees' in the current database, with a primary key ID field named 'employee_id' and a first name field named 'first_name' and a last name field named 'last_name'. The primary key is autoincrement and the first and last names can each be up to 100 characters long.
 
@@ -170,11 +170,26 @@ There are different ways, depending on what you want to display.
 
 [abase sql="SHOW CREATE TABLE employees"] will display the SQL CREATE statement to create the table.
 
+= How do I add a Title field that is a foreign key into a Titles table? =
+
+To make the Title come from a separate Titles table, create your Titles table so it uses the InnoDB storage engine.
+
+[abase sql="CREATE TABLE titles (title_id int(11) NOT NULL AUTO_INCREMENT, title_name varchar(50) DEFAULT NULL, PRIMARY KEY (title_id)) ENGINE=InnoDB"]
+
+Make your employees table InnoDB also and add the column that will contain the foreign key.
+
+[abase sql="ALTER TABLE employees ENGINE = INNODB"]
+[abase sql="ALTER TABLE employees ADD title_key INT NOT NULL, ADD INDEX ( title_key )"]
+
+Finally, set the foreign key relationship.
+
+[abase sql="ALTER TABLE employees ADD FOREIGN KEY ( title_key ) REFERENCES titles (title_id) ON DELETE RESTRICT ON UPDATE RESTRICT"] 
+
 = How do I create a form to add a record to a table? =
 
 [abase form="1,insert" table="employees" columns="first_name,last_name$Add Employee" elements="first_name,last_name" ack="red"]
 
-The form and table attributes specify a form to insert a record into the employees table. The columns attribute specifies the first_name and last_name fields will be displayed and a submit button with "Add Employee" will follow the last_name field. The elements attribute specifies the first_name and last_name fields will be form input elements. The ack attribute requests an acknowledgement be displayed in red when data is inserted.
+The form attribute specifies a form to insert records, and the "1" indicates this form consists of only 1 shortcode (this one). The elements attribute specifies which fields are form input elements and the columns attribute specifies which fields are displayed and their formatting. The "$Add" specifies the submit button following the color field, with "Add" being the button text. The elements attribute specifies the first_name and last_name fields will be form input elements. The ack attribute requests an acknowledgement be displayed in red when data is inserted.
 
 = How do I change the sizes and types of the input elements in a form? =
 
@@ -264,6 +279,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.0.1 =
+
+Fixed bugs including bug preventing ABASE from installing on Windows servers (and possibly other servers).
+
 = 2.0 =
 
 Documentation corrections and clarifications. New versioning for WordPress.
@@ -273,6 +292,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.0.1 =
+
+Fixed bugs including bug preventing ABASE from installing on Windows servers (and possibly other servers).
 
 = 2.0 =
 

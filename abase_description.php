@@ -1,4 +1,4 @@
-<?
+<?php 
 $readme=file_get_contents('readme.txt', FILE_USE_INCLUDE_PATH);
 $startdesc=strpos(strtolower($readme),'== description ==')+strlen('== Description ==');
 $enddesc=strpos($readme,'==',$startdesc);
@@ -12,7 +12,7 @@ $desc=str_replace("\n\n","\n<P>\n",$desc);
 echo $desc;
 ?>
 <h3>Frequently Asked Questions</h3>
-<?
+<?php 
 $startfaq=strpos(strtolower($readme),'== frequently asked questions ==')+strlen('== frequently asked questions ==');
 $endfaq=strpos($readme,'==',$startfaq);
 $faq=substr($readme,$startfaq,$endfaq-$startfaq);
