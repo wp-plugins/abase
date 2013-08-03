@@ -73,7 +73,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 		</ul>
 	<li><strong>from</strong> - Specifies the table_references clause in the MySQL SELECT statement. Default is table specified.
 	<li><strong>group</strong> - Specifies the GROUP BY clause and can include a HAVING part.
-	<li><strong>images</strong> - images=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns that will contain URLs of uploaded images. Similar to <B>files</B> except when an <B>images</B> column is displayed, it is displayed as an HTML image tag with the cell content defining the image source. The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <B>images</B> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. An <B>images</B> column field type should be varchar(255).
+	<li><strong>images</strong> - images=" &lt;column_spec&gt; ( , &lt;column_spec&gt; )" specifies one or more columns that will contain URLs of uploaded images. Similar to <B>files</B> except when an <B>images</B> column is displayed, it is displayed as an HTML image tag with the cell content defining the image source.<BR>&lt;column_spec&gt; ::= ( &lt;site_url&gt;^ ) &lt;column_name&gt;, where &lt;site_url&gt; replaces the default site_url in the image "src" field.<BR>The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <B>images</B> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. An <B>images</B> column field type should be varchar(255).
 	<li><strong>insert</strong> - insert="" (depreciated. Use form="insert".)
 	<li><strong>limit</strong> - Specifies a LIMIT clause.
 	<li><strong>notitle</strong> - notitle="1" will cause the table in a cols="" or columns="" specification to display without the column titles.
@@ -279,9 +279,17 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1 =
+
+The attribute "elements" has always also specified "columns" when "columns" is not, however, "elements" could not contain formatting information, until now. Attribute "elements" can now contain formatting information that is used whenever "columns" is not specified. If both are specified, "columns" takes precedence. If "elements" is not specified but "columns" is specified and a "form" is specified, then "columns" will also specify "elements."
+
+Corrected problem with image references when WordPress is installed in a subdirectory.
+
+Add site url override when images are referenced. Site URL is replaced is replaced with URL preceding field names in images attribute, separated with '^' character.
+
 = 2.0.1 =
 
-Fixed bugs including bug preventing ABASE from installing on Windows servers (and possibly other servers).
+Fixed bugs including bug preventing ABASE from installing on Windows servers and possibly other servers.
 
 = 2.0 =
 
@@ -293,9 +301,17 @@ First version available through WordPress.
 
 == Upgrade notice ==
 
+= 2.1 =
+
+The attribute "elements" has always also specified "columns" when "columns" is not, however, "elements" could not contain formatting information, until now. Attribute "elements" can now contain formatting information that is used whenever "columns" is not specified. If both are specified, "columns" takes precedence. If "elements" is not specified but "columns" is specified and a "form" is specified, then "columns" will also specify "elements."
+
+Corrected problem with image references when WordPress is installed in a subdirectory.
+
+Add site url override when images are referenced. Site URL is replaced is replaced with URL preceding field names in images attribute, separated with '^' character.
+
 = 2.0.1 =
 
-Fixed bugs including bug preventing ABASE from installing on Windows servers (and possibly other servers).
+Fixed bugs including bug preventing ABASE from installing on Windows servers and possibly other servers.
 
 = 2.0 =
 
@@ -304,4 +320,5 @@ Documentation corrections and clarifications. New versioning for WordPress
 = 1.13.7.19 =
 
 First version available through WordPress.
+
 

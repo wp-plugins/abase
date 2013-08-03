@@ -2,8 +2,8 @@
 /*
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
-Description: Create a form, display a table or send an email. Short code:  [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.0.1
+Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
+Version: 2.1
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -228,6 +228,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$maxJoinCount=20;
 	$maxJoinDepth=20;
 	$error_color="#800517";
+	$siteurl=get_option("siteurl");
 	$bus311mtd_default_file_upload_directory='files'; // setting must be declared in abase.php and abase_plugin_options.php
 	$database_in=$incomingfromhandler['database'];
 	$db_in=$incomingfromhandler['db'];
@@ -388,6 +389,22 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			if($columns_in>'' &&$columns_in!='*'){$cols_columns_fields.=','.$columns_in;};
 		};
 	};
+	if($form_in>'' && $elements_in==''){
+		if($columns_in>''){$elements_in=$columns_in;}else if($fields_in>''){$elements_in=$fields_in;};
+	};
+
+	if($elements_in>''){
+		$eles=split(',',$elements_in);
+		$elements_in='';
+		for($j=0;$j<count($eles);$j+=1){
+			if($eles[$j]>''){
+				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($eles[$j]);
+				if($key>''){$elements_in.=','.$key;};
+			};
+		};
+		$elements_in=substr($elements_in,1);
+	};
+
 	$cols_columns_fields='';
 	if($cols_in>'' && $cols_in!='*'){$cols_columns_fields.=','.$cols_in;};
 	if($columns_in>'' && $columns_in!='*'){$cols_columns_fields.=','.$columns_in;};
@@ -552,7 +569,6 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	};
 	if($table_error>''){$error_string.=", $table_error";};
 
-
 	$group=$group_in;
 	$order=$order_in;
 	$limit=$limit_in;
@@ -570,7 +586,20 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$update=','.$update_in.',';
 	$elements=','.$elements_in.',';
 	$files=','.$files_in.',';
-	$images=','.$images_in.',';
+	$files=$files_in;
+	$files_path='';
+	if(strpos($files,'^')){
+		$files_path=substr($files,0,strpos($files,'^'));
+		$files=substr($files,strpos($files,'^')+1);
+	};
+	$files=','.$files.',';
+	$images=$images_in;
+	$images_path='';
+	if(strpos($images,'^')){
+		$images_path=substr($images,0,strpos($images,'^'));
+		$images=substr($images,strpos($images,'^')+1);
+	};
+	$images=','.$images.',';
 	$search=','.$search_in.',';
 	$center=','.$center_in.',';
 	$right=','.$right_in.',';
@@ -619,13 +648,27 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		$requiredPosted=substr($requiredPosted,1);
 	};
 	$filesPosted='';
+	$files_pathPosted=''; // not used for anything
 	if(is_array($_POST['_files'])){
-		foreach ($_POST['_files'] as $file_update) {$filesPosted.=','.$file_update;};
+		foreach ($_POST['_files'] as $file_update) {
+			if(strpos($file_update,'^')){
+				$files_pathPosted=substr($file_update,0,strpos($file_update,'^'));
+				$file_update=substr($file_update,strpos($file_update,'^')+1);
+			};
+			$filesPosted.=','.$file_update;
+		};
 		$filesPosted=substr($filesPosted,1);
 	};
 	$imagesPosted='';
+	$images_pathPosted=''; // not used for anything
 	if(is_array($_POST['_images'])){
-		foreach ($_POST['_images'] as $images_update) {$imagesPosted.=','.$images_update;};
+		foreach ($_POST['_images'] as $images_update) {
+			if(strpos($images_update,'^')){
+				$images_pathPosted=substr($images_update,0,strpos($images_update,'^'));
+				$images_update=substr($images_update,strpos($images_update,'^')+1);
+			};
+			$imagesPosted.=','.$images_update;
+		};
 		$imagesPosted=substr($imagesPosted,1);
 	};
 //	$columnsPosted='';
@@ -995,57 +1038,64 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			for($j=0;$j<count($cols);$j+=1){
 
 				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
-				if($pseudo==''){$pseudo=$key;};
+				if($key>''){
+					if($pseudo==''){$pseudo=$key;};
 
-$strPosition=strpos(' ,'.$filesPosted.$imagesPosted.',',",$key,");
-$stringLength=strlen(basename( $_FILES[$key]['name'] ));
-//$top_output.="\n\n<!-- pseudo = $pseudo; strPosition = $strPosition; stringLength=$stringLength -->\n\n";
+	$strPosition=strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,");
+	$stringLength=strlen(basename( $_FILES[$key]['name'] ));
+	//$top_output.="\n\n<!-- pseudo = $pseudo; strPosition = $strPosition; stringLength=$stringLength -->\n\n";
 
 
-				if(strpos(' ,'.$filesPosted.$imagesPosted.',',",$key,")){
-// file upload code goes here
-					$fname=basename( $_FILES[$key]['name'] );
-					if($fname>''){
-//	set dbfiles directory to default if not defined
-						if($dbFileDir==''){
-							$dbFileDir=$bus311mtd_default_file_upload_directory;
+					if(strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
+	// file upload code goes here
+						$fname=basename( $_FILES[$key]['name'] );
+						if($fname>''){
+//							if(strpos(' ,'.$filesPosted.',',",$key,") && $files_pathPosted>''){
+//								$dbFileDir=$files_pathPosted;
+//							}else if(strpos(' ,'.$imagesPosted.',',",$key,") && $images_pathPosted>''){
+//								$dbFileDir=$images_pathPosted;
+//							};
+	//	set dbfiles directory to default if not defined
+							if($dbFileDir==''){
+								$dbFileDir=$bus311mtd_default_file_upload_directory;
+							};
+
+							$target_Path = $dbFileDir;
+							if(substr($target_Path,-1,1) == '/'){$target_Path=substr($target_Path,0,strlen($target_Path)-1);};
+							$target_Path.='/'.$table.'/'.$key.'/'.$nextId.'/';
+							if(substr($target_Path,0,1) == '/'){$target_Path=substr($target_Path,1);};
+							$target_Pathfile = $target_Path.$fname;
+
+
+	//			$top_output.="\n\n<!-- $target_Pathfile -->\n\n";
+
+							$dirs=split('/',$target_Path);
+							$dir='';
+							for($d=0;$d<count($dirs);$d+=1){
+								$dir.=$dirs[$d].'/';
+								if(!is_dir($dir)){mkdir($dir);};
+							};
+							move_uploaded_file( $_FILES[$key]['tmp_name'], $target_Pathfile );
+							$set.=", `$key`='".$target_Pathfile."'";
+							$wh.=" AND `$key`='".$target_Pathfile."'";
+							if(strpos(' ,'.$acknowledgePosted,",$key,")){$updateString.=" ".$fname;};
+							$numUpdates+=1;
+						};
+					}else{
+					
+					
+						$val=$_POST[$key];
+						if($fieldType[$key]=='date'){
+							if(substr($val,0,10)!='0000-00-00'){$val=date('Y-m-d',strtotime($val));}
+						}else if($fieldType[$key]=='datetime'){
+							if(substr($val,0,10)!='0000-00-00'){$val=date('Y-m-d H:i:s',strtotime($val));}
 						};
 
-						$target_Path = $dbFileDir;
-						if(substr($target_Path,-1,1) == '/'){$target_Path=substr($target_Path,0,strlen($target_Path)-1);};
-						$target_Path.='/'.$table.'/'.$key.'/'.$nextId.'/';
-						if(substr($target_Path,0,1) == '/'){$target_Path=substr($target_Path,1);};
-						$target_Pathfile = $target_Path.$fname;
-
-
-//			$top_output.="\n\n<!-- $target_Pathfile -->\n\n";
-
-						$dirs=split('/',$target_Path);
-						$dir='';
-						for($d=0;$d<count($dirs);$d+=1){
-							$dir.=$dirs[$d].'/';
-							if(!is_dir($dir)){mkdir($dir);};
-						};
-						move_uploaded_file( $_FILES[$key]['tmp_name'], $target_Pathfile );
-						$set.=", `$key`='".$target_Pathfile."'";
-						$wh.=" AND `$key`='".$target_Pathfile."'";
-						if(strpos(' ,'.$acknowledgePosted,",$key,")){$updateString.=" ".$fname;};
+						$set.=", `$key`='".$val."'";
+						$wh.=" AND `$key`='".$val."'";
+						if(strpos(' ,'.$acknowledgePosted.',',",$key,")){$updateString.=" ".$val;};
 						$numUpdates+=1;
 					};
-				}else{
-				
-				
-					$val=$_POST[$key];
-					if($fieldType[$key]=='date'){
-						if(substr($val,0,10)!='0000-00-00'){$val=date('Y-m-d',strtotime($val));}
-					}else if($fieldType[$key]=='datetime'){
-						if(substr($val,0,10)!='0000-00-00'){$val=date('Y-m-d H:i:s',strtotime($val));}
-					};
-
-					$set.=", `$key`='".$val."'";
-					$wh.=" AND `$key`='".$val."'";
-					if(strpos(' ,'.$acknowledgePosted.',',",$key,")){$updateString.=" ".$val;};
-					$numUpdates+=1;
 				};
 			};
 			if($wh>''){$wh=' WHERE '.substr($wh,5);};
@@ -1149,10 +1199,16 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 				if($pseudo==''){$pseudo=$key;};
 //				$top_output.="\n\n<!--- KEY = $key  - ".$_POST[$key]." --->\n\n";
 //				$top_output.="\n\n<!--- password_in = $password_in  --->\n\n";
-				if(strpos(' ,'.$filesPosted.$imagesPosted.',',",$key,")){
+				if(strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
 // file upload code goes here
 					$fname=basename( $_FILES[$key]['name'] );
 					if($fname>''){
+//						if(strpos(' ,'.$filesPosted.',',",$key,") && $files_pathPosted>''){
+//							$dbFileDir=$files_pathPosted;
+//						}else if(strpos(' ,'.$imagesPosted.',',",$key,") && $images_pathPosted>''){
+//							$dbFileDir=$images_pathPosted;
+//						};
+
 //	set dbfiles directory to default if not defined
 						if($dbFileDir==''){
 							$dbFileDir=$bus311mtd_default_file_upload_directory;
@@ -1228,7 +1284,7 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 							$oldValue=htmlspecialchars_decode($_POST[$key.'_01d']);
 							$asl=addslashes($sqlRow[$key]);
 							$post_key ='';
-							if(strpos(' ,'.$filesPosted.$imagesPosted.',',",$key,")){
+							if(strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
 								$fname=basename( $_FILES[$key]['name'] );
 								if($fname>''){
 									$target_Path = $dbFileDir;
@@ -1263,7 +1319,7 @@ $top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 									$updateToSummary.=", $pseudo to '".$_POST[$key]."'";
 									$updateMsg.=", $pseudo updated";
 									$updateSummary.=", $pseudo";
-								}else if(! strpos(' ,'.$filesPosted.$imagesPosted.',',",$key,")){
+								}else if(! strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
 									$updateFailed.=", $pseudo update FAILED. Not updated from '".$oldValue."' to '".$_POST[$key]."'"; $numFailures+=1;
 								};
 							};
@@ -1764,8 +1820,10 @@ $top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 							}else if(strpos(' '.$images,$commaedKey)){
 								$abase_row .="\t<td$sty>";
 								if($sqlRowKey>''){
-									$abase_row .="<a href='/".$sqlRowKey."'>"."<img src='http://".$_SERVER['HTTP_HOST']."/".$sqlRowKey."' style='".$element_style."'></a>";
-									$ntt .="<a href='/".$sqlRowKey."'>"."<img src='http://".$_SERVER['HTTP_HOST']."/".$sqlRowKey."' style='".$element_style."'></a>";
+									$site_path=$images_path;
+									if($site_path==''){$site_path=$siteurl.'/';};
+									$abase_row .="<a href='".$site_path.$sqlRowKey."'>"."<img src='".$site_path.$sqlRowKey."' style='".$element_style."'></a>";
+									$ntt .="<a href='".$site_path.$sqlRowKey."'>"."<img src='".$site_path.$sqlRowKey."' style='".$element_style."'></a>";
 								};
 								$abase_row .="</td>";
 							}else{
