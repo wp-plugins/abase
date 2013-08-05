@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1
+Version: 2.1.1
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -880,7 +880,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								};
 								$wher.=" AND ".$key.$oper."'".$val."'";
 								if($foreignKeyTable[$key]>'' && $foreignKeyColumn[$key]>''){
-									$sqlQ="SELECT $keyOption FROM ".$foreignKeyTable[$key]." WHERE ".$foreignKeyColumn[$key]."='".$_POST[$surro]."'";
+									$sqlQ="SELECT `$keyOption` FROM ".$foreignKeyTable[$key]." WHERE `".$foreignKeyColumn[$key]."`='".$_POST[$surro]."'";
 									$sqlForeignOption = mysql_query($sqlQ, $conn)
 										or die("Couldn't perform query (".__LINE__."): ".$sqlQ . mysql_error() . '.');
 									$sqlFKey = mysql_fetch_assoc($sqlForeignOption);
@@ -890,7 +890,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								};
 								$criteria.=" and ".$pseudo.$oper.$opernd;
 							};
-						}else if($_POST[$key]>'' && $constant==1){
+						}else if($_POST[$key_]>'' && $constant==1){
 							$wher.=" AND ".$key.$oper."'".$surro."'";
 							$criteria.=" and ".$pseudo.$oper."'".$surro."'";
 						};
@@ -1038,23 +1038,20 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			for($j=0;$j<count($cols);$j+=1){
 
 				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
+				$key_=$key.'_';
 				if($key>''){
 					if($pseudo==''){$pseudo=$key;};
 
 	$strPosition=strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,");
-	$stringLength=strlen(basename( $_FILES[$key]['name'] ));
+	$stringLength=strlen(basename( $_FILES[$key_]['name'] ));
 	//$top_output.="\n\n<!-- pseudo = $pseudo; strPosition = $strPosition; stringLength=$stringLength -->\n\n";
 
 
 					if(strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
 	// file upload code goes here
-						$fname=basename( $_FILES[$key]['name'] );
+						
+						$fname=basename( $_FILES[$key_]['name'] );
 						if($fname>''){
-//							if(strpos(' ,'.$filesPosted.',',",$key,") && $files_pathPosted>''){
-//								$dbFileDir=$files_pathPosted;
-//							}else if(strpos(' ,'.$imagesPosted.',',",$key,") && $images_pathPosted>''){
-//								$dbFileDir=$images_pathPosted;
-//							};
 	//	set dbfiles directory to default if not defined
 							if($dbFileDir==''){
 								$dbFileDir=$bus311mtd_default_file_upload_directory;
@@ -1075,16 +1072,14 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								$dir.=$dirs[$d].'/';
 								if(!is_dir($dir)){mkdir($dir);};
 							};
-							move_uploaded_file( $_FILES[$key]['tmp_name'], $target_Pathfile );
+							move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
 							$set.=", `$key`='".$target_Pathfile."'";
 							$wh.=" AND `$key`='".$target_Pathfile."'";
 							if(strpos(' ,'.$acknowledgePosted,",$key,")){$updateString.=" ".$fname;};
 							$numUpdates+=1;
 						};
 					}else{
-					
-					
-						$val=$_POST[$key];
+						$val=$_POST[$key_];
 						if($fieldType[$key]=='date'){
 							if(substr($val,0,10)!='0000-00-00'){$val=date('Y-m-d',strtotime($val));}
 						}else if($fieldType[$key]=='datetime'){
@@ -1102,13 +1097,13 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$no_update=0;
 			if($set>''){
 				$sqlUpdateQuery="INSERT INTO $table SET ".substr($set,2);
-//				$top_output .= "\n\n<!-- $sqlUpdateQuery -->\n\n";
+				$top_output .= "\n\n<!-- $sqlUpdateQuery -->\n\n";
 				if($no_update==1){
 					$top_output .= $sqlUpdateQuery."<BR>";
 				}else{
 					$sqlUpdateResult = mysql_query($sqlUpdateQuery, $conn)
 						or die("Couldn't perform (".__LINE__.") $sqlUpdateQuery $update_in $elements_in " . mysql_error() . '.');
-					$sqlConfirm="SELECT $idField FROM $table $wh ORDER BY $idField DESC LIMIT 1";
+					$sqlConfirm="SELECT `$idField` FROM $table $wh ORDER BY `$idField` DESC LIMIT 1";
 					$sqlResultConfirm = mysql_query($sqlConfirm, $conn)
 						or die("Couldn't perform query (".__LINE__."): $sqlConfirm - " . mysql_error() . '.');
 					$num_rows = mysql_num_rows($sqlResultConfirm);
@@ -1144,10 +1139,11 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$num_rows = mysql_num_rows($sqlResult);
 			$delete_took_place=0;
 			if($num_rows==1 && $form==4 && $_POST['_delete']){
-				if($_POST[$idField]>0 && $_POST[$idField]==$_GET[$idField]){
+				$idField_=$idField.'_';
+				if($_POST[$idField_]>0 && $_POST[$idField_]==$_GET[$idField]){
 					$sqlDelete="DELETE FROM $table WHERE $idField='".$_GET[$idField]."'";
 					if(strlen($password_in)>0){
-						$password_value=addslashes($_POST[$password_in]);
+						$password_value=addslashes($_POST[$password_in.'_']);
 						$sqlDelete.=" AND `$password_in`='$password_value'";
 					};
 					$sqlDelete.=" LIMIT 1";
@@ -1197,11 +1193,14 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 
 				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
 				if($pseudo==''){$pseudo=$key;};
-//				$top_output.="\n\n<!--- KEY = $key  - ".$_POST[$key]." --->\n\n";
+//				$top_output.="\n\n<!--- KEY = $key  - ".$_POST[$key_]." --->\n\n";
 //				$top_output.="\n\n<!--- password_in = $password_in  --->\n\n";
+				$key_=$key.'_';
 				if(strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
 // file upload code goes here
-					$fname=basename( $_FILES[$key]['name'] );
+					
+					$fname=basename( $_FILES[$key_]['name'] );
+//					$fname=basename( $_FILES[$key]['name'] );
 					if($fname>''){
 //						if(strpos(' ,'.$filesPosted.',',",$key,") && $files_pathPosted>''){
 //							$dbFileDir=$files_pathPosted;
@@ -1229,17 +1228,17 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 						if($oldValue>'' && substr($oldValue,0,strlen($target_Path))==$target_Path){
 							unlink($oldValue);
 						};
-						move_uploaded_file( $_FILES[$key]['tmp_name'], $target_Pathfile );
+						move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
 						$set.=", `$key`='".$target_Pathfile."'";
 						$numUpdates+=1;
 					};
 				}else if(strlen($password_in)>0 && $password_in==$key){
-					$password_value=addslashes($_POST[$key]);
+					$password_value=addslashes($_POST[$key_]);
 //					$top_output.="\n\n<!--- $key='$password_value' --->\n\n";
 				}else{
 					$oldValue=htmlspecialchars_decode($_POST[$key.'_01d']);
-					$post_key=$_POST[$key];
-					if($fieldType[$key]=='int' && $post_key==''){$post_key='0';$_POST[$key]='0';};
+					$post_key=$_POST[$key_];
+					if($fieldType[$key]=='int' && $post_key==''){$post_key='0';$_POST[$key_]='0';};
 					if($fieldType[$key]=='date'){
 //						if(substr($post_key,0,10)!='0000-00-00'){$post_key=date('Y-m-d',strtotime($post_key));};
 						if(strtotime($post_key)!=0){
@@ -1269,7 +1268,7 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 //					$top_output.="\n\n<!--- form $form_name: $sqlUpdateQuery --->\n\n";
 
 					$sqlUpdateResult = mysql_query($sqlUpdateQuery, $conn)
-						or die("Couldn't perform UPDATE (".__LINE__."): " . mysql_error() . '.');
+						or die("Couldn't perform UPDATE (".__LINE__."): $sqlUpdateQuery " . mysql_error() . '.');
 					$sqlResultConfirm = mysql_query("SELECT * FROM $table WHERE $idField='".$sqlRow[$idField]."'", $conn)
 						or die("Couldn't perform query (".__LINE__."): $sqlQuery - " . mysql_error() . '.');
 					$num_rows = mysql_num_rows($sqlResultConfirm);
@@ -1277,6 +1276,7 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 
 					for($j=0;$j<count($cols);$j+=1){
 						list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
+						$key_=$key.'_';
 						if($pseudo==''){$pseudo=$key;};
 
 //						if(1 || strpos(' '.$update,",$key,")){
@@ -1285,7 +1285,7 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 							$asl=addslashes($sqlRow[$key]);
 							$post_key ='';
 							if(strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
-								$fname=basename( $_FILES[$key]['name'] );
+								$fname=basename( $_FILES[$key_]['name'] );
 								if($fname>''){
 									$target_Path = $dbFileDir;
 									if(substr($target_Path,-1,1) == '/'){$target_Path=substr($target_Path,0,strlen($target_Path)-1);};
@@ -1294,7 +1294,7 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 									$post_key = $target_Path.$fname;
 								};
 							}else{
-								$post_key=$_POST[$key];
+								$post_key=$_POST[$key_];
 								if($fieldType[$key]=='date'){
 //									if(substr($post_key,0,10)!='0000-00-00'){$post_key=date('Y-m-d',strtotime($post_key));};
 									if(strtotime($post_key)!=0){
@@ -1311,16 +1311,16 @@ $top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 //							if(substr($fieldType[$key],0,3)=='int' && $post_key==''){$post_key='0';};
 							if(strpos(' ,'.$acknowledgePosted.',',",$key,") && $post_key != $oldValue){
 								if($post_key==$sqlRowUpdate[$key] || $post_key==addslashes($sqlRowUpdate[$key])){
-									$updateFromToMsg.=", $pseudo updated from '".$oldValue."' to '".$_POST[$key]."'";
-									$updateFromToSummary.=", $pseudo from '".$oldValue."' to '".$_POST[$key]."'";
-									$updateToFromMsg.=", $pseudo updated to '".$_POST[$key]."' from '".$oldValue."'";
-									$updateToFromSummary.=", $pseudo to '".$_POST[$key]."' from '".$oldValue."'";
-									$updateToMsg.=", $pseudo updated to '".$_POST[$key]."'";
-									$updateToSummary.=", $pseudo to '".$_POST[$key]."'";
+									$updateFromToMsg.=", $pseudo updated from '".$oldValue."' to '".$_POST[$key_]."'";
+									$updateFromToSummary.=", $pseudo from '".$oldValue."' to '".$_POST[$key_]."'";
+									$updateToFromMsg.=", $pseudo updated to '".$_POST[$key_]."' from '".$oldValue."'";
+									$updateToFromSummary.=", $pseudo to '".$_POST[$key_]."' from '".$oldValue."'";
+									$updateToMsg.=", $pseudo updated to '".$_POST[$key_]."'";
+									$updateToSummary.=", $pseudo to '".$_POST[$key_]."'";
 									$updateMsg.=", $pseudo updated";
 									$updateSummary.=", $pseudo";
 								}else if(! strpos(' ,'.$filesPosted.','.$imagesPosted.',',",$key,")){
-									$updateFailed.=", $pseudo update FAILED. Not updated from '".$oldValue."' to '".$_POST[$key]."'"; $numFailures+=1;
+									$updateFailed.=", $pseudo update FAILED. Not updated from '".$oldValue."' to '".$_POST[$key_]."'"; $numFailures+=1;
 								};
 							};
 						};
@@ -1614,7 +1614,7 @@ $top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 									if(strpos($opt_val,'.')){
 										$opt_val=substr($opt_val,strpos($opt_val,'.')+1);
 									};
-									$sqlQry="SELECT $foreignKeyColumn[$key],$opt_val FROM ".$foreignKeyTable[$key]." ORDER BY ".$opt_val;
+									$sqlQry="SELECT `$foreignKeyColumn[$key]`,`$opt_val` FROM ".$foreignKeyTable[$key]." ORDER BY ".$opt_val;
 									$sqlKeys = mysql_query($sqlQry, $conn)
 										or die("Couldn't perform query (".__LINE__."): $sqlQry - $foreignKeyColumn[$key] - $strng - " . mysql_error() . '.');
 									while($sqlKey = mysql_fetch_assoc($sqlKeys)){
@@ -1689,46 +1689,46 @@ $top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 										$abase_row .='<a href="/'.$sqlRowKey.'">'.$fn.'</a><BR>';
 										$ntt .='<a href="/'.$sqlRowKey.'">'.$fn.'</a>';
 									};
-									$abase_row .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=file>";
-									$ntt .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=file>";
+									$abase_row .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=file>";
+									$ntt .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=file>";
 								}else if($element_type=='text'){
-									$abase_row .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
-									$ntt .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
+									$abase_row .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
+									$ntt .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
 								}else if($element_type=='password' || ($element_type=='' && strlen($password_in)>0 && $password_in==$key)){
-									$abase_row .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' autocomplete='off' type=password $input_style value=''>";
-									$ntt .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' autocomplete='off' type=password $input_style value=''>";
+									$abase_row .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' autocomplete='off' type=password $input_style value=''>";
+									$ntt .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' autocomplete='off' type=password $input_style value=''>";
 								}else if($element_type=='textarea'){
-									$abase_row .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
-									$ntt .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$abase_row .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$ntt .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
 								}else if($optionList>''){
-									$abase_row .="<select name='".$key."' id='bus311mtd_".$ranstr.$key."'>".$optionList."</select>";
-									$ntt .="<select name='".$key."' id='bus311mtd_".$ranstr.$key."'>".$optionList."</select>";
+									$abase_row .="<select name='".$key."_' id='bus311mtd_".$ranstr.$key."'>".$optionList."</select>";
+									$ntt .="<select name='".$key."_' id='bus311mtd_".$ranstr.$key."'>".$optionList."</select>";
 								}else if($element_type!=''){
-									$abase_row .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type='".$element_type."' $input_style value='".$sqlRowKey."'>";
-									$ntt .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
+									$abase_row .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type='".$element_type."' $input_style value='".$sqlRowKey."'>";
+									$ntt .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
 								}else if($ftype=='date'){
 									if($input_style==''){$input_style="size='10'";};
 									
-									$abase_row .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=text $input_style value=".'"'.$sqlRowKey.'"'.">";
-									$ntt .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=text $input_style value=".'"'.$sqlRowKey.'"'.">";
+									$abase_row .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=text $input_style value=".'"'.$sqlRowKey.'"'.">";
+									$ntt .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=text $input_style value=".'"'.$sqlRowKey.'"'.">";
 								}else if($ftype=='longtext'){
 									if($input_style==''){$input_style=' style="width:600px;height:400px;vertical-align:0px;$element_style" ';};
 									if(!strpos($input_style,'vertical-align')){$input_style=' style="vertical-align:0px;'.substr($input_style,strpos($input_style,'="')+2);};
-									$abase_row .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
-									$ntt .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$abase_row .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$ntt .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
 								}else if($ftype=='text'){
 									if($input_style==''){$input_style=' style="width:600px;height:40px;vertical-align:0px;$element_style" ';};
 									if(!strpos($input_style,'vertical-align')){$input_style=' style="vertical-align:0px;'.substr($input_style,strpos($input_style,'="')+2);};
-									$abase_row .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
-									$ntt .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$abase_row .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$ntt .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
 								}else if($fsize==''){
 									$numRows=20;
 									if($input_style==''){$input_style="cols=60 rows='".$numRows."'";};
-									$abase_row .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
-									$ntt .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$abase_row .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$ntt .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
 								}else if($fsize==1 && $ftype=='int'){
-									$abase_row .="<input type=checkbox name='".$key."' id='bus311mtd_".$ranstr.$key."' value=1";
-									$ntt .="<input type=checkbox name='".$key."' id='bus311mtd_".$ranstr.$key."' value=1";
+									$abase_row .="<input type=checkbox name='".$key."_' id='bus311mtd_".$ranstr.$key."' value=1";
+									$ntt .="<input type=checkbox name='".$key."_' id='bus311mtd_".$ranstr.$key."' value=1";
 									if($sqlRowKey=='1'){$abase_row .=" checked";$ntt .=" checked";};
 									$abase_row.=">";
 									$ntt.=">";
@@ -1739,15 +1739,15 @@ $top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 									if($input_style==''){$input_style=' style="width:'.$widthpx.'px;height:18px;vertical-align:none;" ';};
 									if(!strpos($input_style,'vertical-align')){$input_style=' style="vertical-align:0px;'.substr($input_style,strpos($input_style,'="')+2);};
 		//								if($input_style==''){$input_style="cols=60 rows='".$numRows."'";};
-									$abase_row .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
-									$ntt .="<textarea name='".$key."' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$abase_row .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
+									$ntt .="<textarea name='".$key."_' id='bus311mtd_".$ranstr.$key."' $input_style>".$sqlRowKey."</textarea>";
 								}else{
 									$widthpx=$fsize*8;
 									if($input_style==''){
 										$input_style=' style="width:'.$widthpx.'px;" ';
 									};
-									$abase_row .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
-									$ntt .="<input name='".$key."' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
+									$abase_row .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
+									$ntt .="<input name='".$key."_' id='bus311mtd_".$ranstr.$key."' type=text $input_style value='".$sqlRowKey."'>";
 								};
 								if(strpos(' '.$required,$commaedKey)){
 									$javascript.='if(document.getElementById("bus311mtd_'.$ranstr.$key.'").value==""){emsg+="'.$pseudo.' required."};';
@@ -1775,8 +1775,8 @@ $top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 								
 
 								if($constant==1){
-									$abase_row .='<input type=checkbox name="'.$key.'" value="'.$surro.'" style="vertical-align:-3px;">'.$surro;
-									$ntt .='<input type=checkbox name="'.$key.'" value="'.$surro.'" style="vertical-align:-3px;">'.$surro;
+									$abase_row .='<input type=checkbox name="'.$key.'_" value="'.$surro.'" style="vertical-align:-3px;">'.$surro;
+									$ntt .='<input type=checkbox name="'.$key.'_" value="'.$surro.'" style="vertical-align:-3px;">'.$surro;
 								}else if($optionList>''){
 									$abase_row .="<select name='".$surro."' $input_style><option value=''>".$optionList."</select>";
 									$ntt .="<select name='".$surro."' $input_style><option value=''>".$optionList."</select>";

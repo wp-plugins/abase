@@ -279,6 +279,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1.1 =
+
+Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical.
+
 = 2.1 =
 
 The attribute "elements" has always also specified "columns" when "columns" is not, however, "elements" could not contain formatting information, until now. Attribute "elements" can now contain formatting information that is used whenever "columns" is not specified. If both are specified, "columns" takes precedence. If "elements" is not specified but "columns" is specified and a "form" is specified, then "columns" will also specify "elements."
@@ -300,6 +304,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.1.1 =
+
+Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical.
 
 = 2.1 =
 
