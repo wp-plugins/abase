@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.1
+Version: 2.1.2
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -46,9 +46,6 @@ function your_plugin_settings_link($links) {
   array_unshift($links, $settings_link); 
   return $links; 
 };
-
-// change |"=>'', "| to |="?" |
-// db="?" form="?" table="?" elements="?" required="?" select="?" from="?" sql="?" where="?" group="?" order="?" limit="?" cols="?" columns="?" fields="?" files="?" images="?" notitle="?" rownum="?" style="?" center="?" right="?" rlink="?" alink="?" ack="?" echo="?"
 
 $plugin = plugin_basename(__FILE__); 
 add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link' );
@@ -671,11 +668,6 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		};
 		$imagesPosted=substr($imagesPosted,1);
 	};
-//	$columnsPosted='';
-//	if(is_array($_POST['_columns'])){
-//		foreach ($_POST['_columns'] as $columns_update) {$columnsPosted.=','.$columns_update;};
-//		$columnsPosted=substr($columnsPosted,1);
-//	};
 	$acknowledgePosted='';
 	if(is_array($_POST['_acknowledge'])){
 		foreach ($_POST['_acknowledge'] as $acknowledge_update) {$acknowledgePosted.=','.$acknowledge_update;};
@@ -944,8 +936,6 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			}else{
 				$top_output.=")<BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains no tables.<BR>";
 			};
-//			$top_output.="<BR>At minimum, attribute <STRONG>sql=\"...\"</STRONG>, <STRONG>table=\"...\"</STRONG> or <STRONG>from=\"...\"</STRONG> must be specified.<BR>";
-//			$top_output.="Click <nobr><STRONG><A HREF='/wp-admin/options-general.php?page=".$GLOBALS['bus311mtd_Settings_Page_Slug']."' target='_blank' style='color:$error_color;'>".$GLOBALS['bus311mtd_Settings_Option_Text']."</A></STRONG> under <STRONG>Settings</STRONG> in the WordPress Admin section for more information using ABASE.</nobr><BR>";
 			if($lost_table_error){$top_output.=substr($lost_table_error,0,strlen($lost_table_error)-4);};
 			$top_output.='</font>';
 		}else{
@@ -1097,7 +1087,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$no_update=0;
 			if($set>''){
 				$sqlUpdateQuery="INSERT INTO $table SET ".substr($set,2);
-				$top_output .= "\n\n<!-- $sqlUpdateQuery -->\n\n";
+//				$top_output .= "\n\n<!-- $sqlUpdateQuery -->\n\n";
 				if($no_update==1){
 					$top_output .= $sqlUpdateQuery."<BR>";
 				}else{
@@ -1108,9 +1098,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 						or die("Couldn't perform query (".__LINE__."): $sqlConfirm - " . mysql_error() . '.');
 					$num_rows = mysql_num_rows($sqlResultConfirm);
 					$sqlID = mysql_fetch_assoc($sqlResultConfirm);
-//					$sqlQuery=$sqlQueryB4Where." WHERE $idField='".$sqlID[$idField]."'";
-//					$update_in=$insert_in; $update=$insert;
-//					$insert_in='';$insert='';
+
 					$updateMsg=substr($updateString,1);
 					if($ack_color>''){
 						if($ack_color==strtoupper($ack_color)){$updateMsg="<strong>$updateMsg</strong>";};
@@ -1182,7 +1170,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 //			};
 			
 			$cols=split(',',$updatePosted);
-$top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
+//$top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 
 			$set=''; 
 			$numUpdates=0;
@@ -1307,7 +1295,7 @@ $top_output.="\n\n<!--- updatePosted $updatePosted --->\n\n";
 									};
 								};
 							};
-$top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
+//$top_output.="\n\n<!--- $key='$post_key' from '$oldValue' --->\n\n";
 //							if(substr($fieldType[$key],0,3)=='int' && $post_key==''){$post_key='0';};
 							if(strpos(' ,'.$acknowledgePosted.',',",$key,") && $post_key != $oldValue){
 								if($post_key==$sqlRowUpdate[$key] || $post_key==addslashes($sqlRowUpdate[$key])){

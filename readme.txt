@@ -279,6 +279,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1.2 =
+
+Remove stray comment lines from 2.1.1 upgrade.
+
 = 2.1.1 =
 
 Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical.
@@ -304,6 +308,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.1.2 =
+
+Remove stray comment lines from 2.1.1 upgrade.
 
 = 2.1.1 =
 
