@@ -295,7 +295,7 @@ Remove stray comment lines from 2.1.1 upgrade.
 
 = 2.1.1 =
 
-Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical. NOTE THAT NAMES IN HIDDEN INPUT TAGS (SUCH AS CURRENT DATE) NEED TO BE MODIFIED BY APPENDING AN UNDERSCORE (_).
+Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical. NOTE THAT NAMES IN HIDDEN INPUT TAGS (SUCH AS CURRENT DATE) SHOULD BE MODIFIED BY APPENDING AN UNDERSCORE (_).
 
 = 2.1 =
 
@@ -333,7 +333,7 @@ Remove stray comment lines from 2.1.1 upgrade.
 
 = 2.1.1 =
 
-Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical. NOTE THAT NAMES IN HIDDEN INPUT TAGS (SUCH AS CURRENT DATE) NEED TO BE MODIFIED BY APPENDING AN UNDERSCORE (_).
+Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical. NOTE THAT NAMES IN HIDDEN INPUT TAGS (SUCH AS CURRENT DATE) SHOULD BE MODIFIED BY APPENDING AN UNDERSCORE (_).
 
 = 2.1 =
 

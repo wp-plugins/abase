@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.3
+Version: 2.1.4
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -1073,7 +1073,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 							$numUpdates+=1;
 						};
 					}else{
-						$val=$_POST[$key_];
+						if($_POST[$key_]){$val=$_POST[$key_];}else if($_POST[$key]){$val=$_POST[$key];}else{$val='';};
 						if($fieldType[$key]=='date'){
 							if(substr($val,0,10)!='0000-00-00'){$val=date('Y-m-d',strtotime($val));}
 						}else if($fieldType[$key]=='datetime'){
@@ -1226,10 +1226,14 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					};
 				}else if(strlen($password_in)>0 && $password_in==$key){
 					$password_value=addslashes($_POST[$key_]);
+					if($_POST[$key_]){$password_value=addslashes($_POST[$key_]);}else if($_POST[$key]){$password_value=addslashes($_POST[$key]);}else{$val='';};
+
 //					$top_output.="\n\n<!--- $key='$password_value' --->\n\n";
 				}else{
 					$oldValue=htmlspecialchars_decode($_POST[$key.'_01d']);
 					$post_key=$_POST[$key_];
+					if($_POST[$key_]){$post_key=$_POST[$key_];}else if($_POST[$key]){$post_key=$_POST[$key];}else{$post_key='';};
+
 					if($fieldType[$key]=='int' && $post_key==''){$post_key='0';$_POST[$key_]='0';};
 					if($fieldType[$key]=='date'){
 //						if(substr($post_key,0,10)!='0000-00-00'){$post_key=date('Y-m-d',strtotime($post_key));};
@@ -1287,6 +1291,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								};
 							}else{
 								$post_key=$_POST[$key_];
+								if($_POST[$key_]){$post_key=$_POST[$key_];}else if($_POST[$key]){$post_key=$_POST[$key];}else{$post_key='';};
 								if($fieldType[$key]=='date'){
 //									if(substr($post_key,0,10)!='0000-00-00'){$post_key=date('Y-m-d',strtotime($post_key));};
 									if(strtotime($post_key)!=0){
