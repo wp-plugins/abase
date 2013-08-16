@@ -17,7 +17,7 @@ The ABASE shortcode accesses a MySQL database without having to code PHP. Over 3
 <h3>Shortcode</h3>
 The ABASE shortcode with a list of all the optional attributes is shown next. Each attribute is described in detail below.
 <P>
-[abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
+[abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
 <P>
 Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <B>sql</B>, <B>from</B>, or <B>table</B> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <B>emailto</B> attribute. The attribute names must be lower case.
 <P>
@@ -32,9 +32,9 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 		<ul><li>&lt;verbosity&gt;="1" or "2" or "3" or "4"<li>&lt;url&gt;=path-file of an update form for a record insert or update<li>&lt;color&gt;=HTML color of acknowledgement. If color is in all caps, acknowlegement will display in bold</ul>
 	<li><strong>alink</strong> - alink=" &lt;column&gt; ( , &lt;url&gt; ( , &lt;append&gt;  ( , &lt;target&gt; ) ) )"
 		<ul><li>&lt;column&gt; - column name whose content will become a link to a &lt;url&gt; that is appended with the contents of column &lt;append&gt;.<li>&lt;target&gt; specifies the target window for the link (e.g., target="_blank" will open a new browser window.</ul>
-	<li><strong>center</strong> - center=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more table columns to center when displaying.
-	<li><strong>cols</strong> - cols=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed as a table. Two or more records to be displayed are required. Designed to be used in conjunction with fields specification. See &lt;field_spec&gt; below under <B>fields</B>.
-	<li><strong>columns</strong> - columns=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the columns to be displayed in a table. Zero or more records will be displayed. See &lt;field_spec&gt; below under <B>fields</B>.
+	<li><strong>center</strong> - center=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more table columns to center when displaying. Note: <strong>center="*"</strong> indicates all columns.
+	<li><strong>cols</strong> - cols=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed as a table. Two or more records to be displayed are required. Designed to be used in conjunction with fields specification. See &lt;field_spec&gt; below under <B>fields</B>. Note: <strong>cols="*"</strong> indicates all columns.
+	<li><strong>columns</strong> - columns=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the columns to be displayed in a table. Zero or more records will be displayed. See &lt;field_spec&gt; below under <B>fields</B>. Note: <strong>columns="*"</strong> indicates all columns.
 	<li><strong>database</strong> - database="" Change default database. Choose database 1, 2  or 3 as specified in Settings. Exactly the same as db (next).
 	<li><strong>db</strong> - db="" Change default database. Same as database.
 	<li><strong>echo</strong> - echo="&lt;color&gt;" will display (i.e., echo) the shortcode in the specified HTML &lt;color&gt; (e.g., echo="red").
@@ -58,7 +58,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 			<li>&lt;constant&gt; = value field of a checkbox.
 			<li>&lt;integer&gt; = digits consisting of 0-9.
 			<li>&lt;space&gt; = blank space.
-		</ul>
+		</ul> Note: <strong>fields"*"</strong> indicates all fields.
 	<li><strong>files</strong> - files=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns that will contain URLs of uploaded files. The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <B>files</B> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. A <B>files</B> column field type should be varchar(255).
 	<li><strong>form</strong> - form="( &lt;form_type&gt; , ) &lt;tag_code&gt; ( , &lt;form_action&gt; )"  Beginning and/or end of HTML form.
 		<ul>
@@ -75,12 +75,14 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>group</strong> - Specifies the GROUP BY clause and can include a HAVING part.
 	<li><strong>images</strong> - images=" &lt;column_spec&gt; ( , &lt;column_spec&gt; )" specifies one or more columns that will contain URLs of uploaded images. Similar to <B>files</B> except when an <B>images</B> column is displayed, it is displayed as an HTML image tag with the cell content defining the image source.<BR>&lt;column_spec&gt; ::= ( &lt;site_url&gt;^ ) &lt;column_name&gt;, where &lt;site_url&gt; replaces the default site_url in the image "src" field.<BR>The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <B>images</B> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. An <B>images</B> column field type should be varchar(255).
 	<li><strong>insert</strong> - insert="" (depreciated. Use form="insert".)
+	<li><strong>left</strong> - left=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns to left justify. Note: <strong>left="*"</strong> indicates all columns.
 	<li><strong>limit</strong> - Specifies a LIMIT clause.
+	<li><strong>notable</strong> - notable="1" will cause the table in a cols="" or columns="" specification to display without the beginning (&lt;table&gt;) or ending table tag (&lt;/table&gt;).
 	<li><strong>notitle</strong> - notitle="1" will cause the table in a cols="" or columns="" specification to display without the column titles.
 	<li><strong>order</strong> - Specifies the ORDER BY clause.
 	<li><strong>password</strong> - password="" specify password field. Password entry and match is required to update or delete table record.
 	<li><strong>required</strong> - required=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns in an insert or update form that must have a filled in value or the submit will not be accepted. An error alert message will appear.
-	<li><strong>right</strong> - right=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns to right justify.
+	<li><strong>right</strong> - right=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns to right justify. Note: <strong>right="*"</strong> indicates all columns.
 	<li><strong>rlink</strong> - rlink=" &lt;column&gt; ( , &lt;url&gt; ( , &lt;target&gt; ) )" Record link. Link which specifies the primary index &lt;name&gt;=&lt;value&gt; pair in query string. Used to display a single record in the database.
 		<ul>
 			<li>&lt;column&gt; column that will be a link. 
@@ -279,13 +281,21 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1.3 =
+
+Added notable="1" attribute so user can specify no opening and closing table tags, allowing much greater style and format control.
+
+Added left="" attribute to specify column(s) to left justify.
+
+Added use of asterisk to specify all columns for center, left and right, for example, center="*" specifies all columns to be specified.
+
 = 2.1.2 =
 
 Remove stray comment lines from 2.1.1 upgrade.
 
 = 2.1.1 =
 
-Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical.
+Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical. NOTE THAT NAMES IN HIDDEN INPUT TAGS (SUCH AS CURRENT DATE) NEED TO BE MODIFIED BY APPENDING AN UNDERSCORE (_).
 
 = 2.1 =
 
@@ -309,13 +319,21 @@ First version available through WordPress.
 
 == Upgrade notice ==
 
+= 2.1.3 =
+
+Added notable="1" attribute so user can specify no opening and closing table tags, allowing much greater style and format control.
+
+Added left="" attribute to specify column(s) to left justify.
+
+Added use of asterisk to specify all columns for center, left and right, for example, center="*" specifies all columns to be specified.
+
 = 2.1.2 =
 
 Remove stray comment lines from 2.1.1 upgrade.
 
 = 2.1.1 =
 
-Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical.
+Fixed a bug where some choices of table fields names (e.g. "author") would cause an error when inserting or updating. Form element names now have an underscore appended to field table fields names instead of their being identical. NOTE THAT NAMES IN HIDDEN INPUT TAGS (SUCH AS CURRENT DATE) NEED TO BE MODIFIED BY APPENDING AN UNDERSCORE (_).
 
 = 2.1 =
 

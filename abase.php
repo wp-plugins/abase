@@ -2,8 +2,8 @@
 /*
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
-Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" limit="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.2
+Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
+Version: 2.1.3
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -50,7 +50,7 @@ function your_plugin_settings_link($links) {
 $plugin = plugin_basename(__FILE__); 
 add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link' );
 function abase_handler($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(0,$incomingfrompost,$content);
 	return $abase_output;
 };
@@ -58,22 +58,22 @@ function abase_handler($incomingfrompost, $content = null) {
 // "image_style"=>'', "input_styles"=>'', "styles"=>'' are no longer used and should be removed
 
 function abase_handler2($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(2,$incomingfrompost,$content);
 	return $abase_output;
 };
 function abase_handler3($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(3,$incomingfrompost,$content);
 	return $abase_output;
 };
 function ABASE_handlerA($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function('-1',$incomingfrompost,$content);
 	return $abase_output;
 };
 function bus311tabledisplay_handler($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(1,$incomingfrompost,$content);
 	return $abase_output;
 };
@@ -292,6 +292,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$order_in=$incomingfromhandler['order'];
 	$limit_in=$incomingfromhandler['limit'];
 	$notitle_in=$incomingfromhandler['notitle'];
+	$notable_in=$incomingfromhandler['notable'];
 	$style_in=$incomingfromhandler['style'];
 	$image_style_in=$incomingfromhandler['image_style'];
 	$input_styles_in=$incomingfromhandler['input_styles'];
@@ -301,6 +302,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$fullrlink_in=$incomingfromhandler['rlink'];
 	$center_in=$incomingfromhandler['center'];
 	$right_in=$incomingfromhandler['right'];
+	$left_in=$incomingfromhandler['left'];
 	$cols_in=$incomingfromhandler['cols'];
 	$files_in=$incomingfromhandler['files'];
 	$images_in=$incomingfromhandler['images'];
@@ -572,6 +574,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	if($limit=='' && ($search_in>'')){$limit='1';};
 	if($insert_in>''){$limit='0';};
 	$notitle=$notitle_in;
+	$notable=$notable_in;
 	$style=$style_in;
 	$image_style=$image_style_in;
 	$rownum=$rownum_in;
@@ -600,6 +603,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$search=','.$search_in.',';
 	$center=','.$center_in.',';
 	$right=','.$right_in.',';
+	$left=','.$left_in.',';
 //	$ack=strtolower($updateack_in);
 	$ack='';$ack_url='';$ack_color='';
 	if($updateack_in>''){
@@ -1442,6 +1446,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$view='table';
 			if(($num_rows==1 || $search_in>'') && $fields_in>''){$view='record';};
 			$fields_cols_columns='';
+			$table_columns='';
 			if($view=='table'){
 				$col_columns_in=$cols_in;
 				if($col_columns_in==''){$col_columns_in=$columns_in;};
@@ -1457,6 +1462,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 						};
 					};
 				};
+				$table_columns=$col_columns_in;
 				$cols=split(',',$col_columns_in);
 
 			}else if($view=='record'){
@@ -1469,16 +1475,23 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 						or die("Couldn't perform query (".__LINE__."): $sqlQuery - " . mysql_error() . '.');
 //					$output .="<BR><BR>$fields_in<br><BR>";
 				};
+				$table_columns=$fields_in;
 				$cols=split(',',$fields_in);
 			};
+			$left=str_replace('*',$table_columns,$left);
+			$center=str_replace('*',$table_columns,$center);
+			$right=str_replace('*',$table_columns,$right);
 			$fields_cols_columns='';
 			$styles=split(',',$styles_in);
 
-//			$output .="\n\n<!-- $sqlQuery -->\n\n";		
-			if($style!=''){
-				$output .='<table style="'.$style.'"'.">";
-			}else{
-				$output .="<table style='width:auto;'>";
+//			$output .="\n\n<!-- $sqlQuery -->\n\n";
+			if($notable!='1'){
+				if($style!=''){
+					$output .='<table style="'.$style.'"'.">";
+				}else{
+//					$output .="<table style='width:auto; padding:0 1.0em;'>";
+					$output .="<table style='width:auto;'>";
+				};
 			};
 			if($view=='record'){
 				if(0 && $updateMsg>''){
@@ -1562,11 +1575,27 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								$rw+=1;
 								if($rownum=='1'){$output .="<td>".$rw.".</td>";};
 							}else{
-								if(strpos(' '.$center,$key)){
+//  $output.="\n\n<!--	center_in=$center_in, right_in=$right_in, left_in=$left_in	-->\n\n";
+//  $output.="\n\n<!--	center=$center, right=$right, left=$left	-->\n\n";
+								if(strpos(' '.$center_in,'*')){
 									$sty=' style="text-align:center;"';
-								}else if(strpos(' '.$right,$key)){
+								};
+								if(strpos(' '.$right_in,'*')){
 									$sty=' style="text-align:right;"';
 								};
+								if(strpos(' '.$left_in,'*')){
+									$sty=' style="text-align:left;"';
+								};
+								if(!strpos(' '.$center_in,'*') && strpos(' '.$center,$key)){
+									$sty=' style="text-align:center;"';
+								};
+								if(!strpos(' '.$right_in,'*') && strpos(' '.$right,$key)){
+									$sty=' style="text-align:right;"';
+								};
+								if(!strpos(' '.$left_in,'*') && strpos(' '.$left,$key)){
+									$sty=' style="text-align:left;"';
+								};
+//  $output.="\n\n<!--	key=$key, sty=$sty	-->\n\n";
 								$abase_names.="<th$sty>";
 								$abase_names .= $pseudo;
 								if(strpos(' '.$required,$commaedKey)){$abase_names .= "*";};
@@ -1656,7 +1685,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								};
 			//	Update or Insert Form Element
 							}else if(strpos(' '.$update.$insert,$commaedKey) || ($form_type=='delete' && strlen($password_in)>0 && $password_in==$key)){
-								$abase_row .="\t<td$sty>";
+								$abase_row .="<td$sty>";
 								$ordr=split(',',$update_in.$insert_in);
 								$styls=split(',',$input_styles_in);
 								$input_style='';
@@ -1756,7 +1785,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 
 			//	Search Form Element ($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant)
 							}else if(strpos(' '.$search,$commaedKey)){
-								$abase_row .="\t<td$sty>";
+								$abase_row .="<td$sty>";
 
 								$input_style=$element_style;
 								if($input_style>''){$input_style=' style="'.$input_style.'" ';};
@@ -1803,10 +1832,10 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								};
 								$abase_row .="</td>";
 								if(0 && $submit>''){
-									$abase_row .="\t<td$sty><input type=submit value='".$submit."'></td>";
+									$abase_row .="<td$sty><input type=submit value='".$submit."'></td>";
 								};
 							}else if(strpos(' '.$images,$commaedKey)){
-								$abase_row .="\t<td$sty>";
+								$abase_row .="<td$sty>";
 								if($sqlRowKey>''){
 									$site_path=$images_path;
 									if($site_path==''){$site_path=$siteurl.'/';};
@@ -1815,19 +1844,19 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								};
 								$abase_row .="</td>";
 							}else{
-								$abase_row .="\t<td$sty>".$sqlRowKey."</td>";
+								$abase_row .="<td$sty>".$sqlRowKey."</td>";
 								$ntt .=$sqlRowKey;
 							};
 							if($form!=4 && $submit>''){
-								$abase_row .="\t<td$sty><input type=submit value='".$submit."'></td>";
+								$abase_row .="<td$sty><input type=submit value='".$submit."'></td>";
 								$ntt .="&nbsp;<input type=submit value='".$submit."'>";
 							}else if($form==4 && ($submit>'' || $delete>'') && $num_rows==1 && $delete_took_place==0){
 								if($_GET[$idField] && $_GET[$idField]>0){
-									$abase_row .="\t<td$sty><input type=submit name='_delete' value='".$delete.$submit."'></td>";
+									$abase_row .="<td$sty><input type=submit name='_delete' value='".$delete.$submit."'></td>";
 									$ntt .="&nbsp;<input type=submit name='_delete' value='".$delete.$submit."'>";
 								};
 							}else if($form==4 && ($submit>'' || $delete>'') && $num_rows==1 && $delete_took_place==1){
-								$abase_row .="\t<td$sty><EM>Deleted</EM></td>";
+								$abase_row .="<td$sty><EM>Deleted</EM></td>";
 								$ntt .="Deleted";
 							};
 
@@ -1864,7 +1893,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					};
 //					$lastValue=$ntt;
 				};
-				$output .="</table>";
+				if($notable!='1'){$output .="</table>";};
 			};
 		};
 
