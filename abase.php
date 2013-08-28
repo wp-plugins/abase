@@ -2,8 +2,8 @@
 /*
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
-Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.4
+Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
+Version: 2.1.5
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -50,7 +50,7 @@ function your_plugin_settings_link($links) {
 $plugin = plugin_basename(__FILE__); 
 add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link' );
 function abase_handler($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(0,$incomingfrompost,$content);
 	return $abase_output;
 };
@@ -58,22 +58,22 @@ function abase_handler($incomingfrompost, $content = null) {
 // "image_style"=>'', "input_styles"=>'', "styles"=>'' are no longer used and should be removed
 
 function abase_handler2($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(2,$incomingfrompost,$content);
 	return $abase_output;
 };
 function abase_handler3($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(3,$incomingfrompost,$content);
 	return $abase_output;
 };
 function ABASE_handlerA($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function('-1',$incomingfrompost,$content);
 	return $abase_output;
 };
 function bus311tabledisplay_handler($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(1,$incomingfrompost,$content);
 	return $abase_output;
 };
@@ -230,7 +230,9 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$database_in=$incomingfromhandler['database'];
 	$db_in=$incomingfromhandler['db'];
 	if($db_in=='' && $database_in>''){$db_in=$database_in;}
-
+	$pageURL = $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+	$remote_addr = $_SERVER["REMOTE_ADDR"];
+	$server_addr = $_SERVER["SERVER_ADDR"];
 // global database variable defaults to database 1.
 // db or database will set the global database variable. [abase uses the global database variable if db or database is not specified.
 // [abase2 and [abase3 use databases 2 or 3 respective but does not change the global database variable.
@@ -319,6 +321,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$emailfrom=$incomingfromhandler['emailfrom'];
 	$emailcc=$incomingfromhandler['emailcc'];
 	$emailbcc=$incomingfromhandler['emailbcc'];
+	$emailorigin=$incomingfromhandler['emailorigin'];
 	$emailto_in=$incomingfromhandler['emailto'];
 	$emailfrom_in=$incomingfromhandler['emailfrom'];
 	$emailcc_in=$incomingfromhandler['emailcc'];
@@ -402,6 +405,12 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			};
 		};
 		$elements_in=substr($elements_in,1);
+	};
+	$pageURLemail=str_replace('.',' ',$pageURL);
+	$email_tail="<BR>\n_____<BR>\n<font size='1'>$pageURLemail $remote_addr</font>";
+	if($emailorigin=='0' || strtolower(substr($emailorigin,0,1))=='n'){$email_tail=='';
+	}else if(strtolower(substr($emailorigin,0,1))=='p'){$email_tail="<BR>\n_____<BR>\n<font size='1'>$pageURLemail</font>";
+	}else if(strtolower(substr($emailorigin,0,1))=='r'){$email_tail="<BR>\n_____<BR>\n<font size='1'>$remote_addr</font>";
 	};
 
 	$cols_columns_fields='';
@@ -936,9 +945,9 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$top_output.=$ver;
 			$db_list=str_replace(',','<li>',$database_table_rows);
 			if($db_list>''){
-				$top_output.=")<BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains tables:<ol><li>$db_list</ol>";
+				$top_output.=")<BR>Page: <I>$pageURL</I> from <I>$remote_addr</I><BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> containing tables:<ol><li>$db_list</ol>";
 			}else{
-				$top_output.=")<BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains no tables.<BR>";
+				$top_output.=")<BR>Page: <I>$pageURL</I> from <I>$remote_addr</I><BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains no tables.<BR>";
 			};
 			if($lost_table_error){$top_output.=substr($lost_table_error,0,strlen($lost_table_error)-4);};
 			$top_output.='</font>';
@@ -1961,6 +1970,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		if($send_the_email==1){
 			if($emailsubject==''){$emailsubject='Server message';};
 			if($emailfrom==''){$emailfrom='server@'.$dname;};
+			$ntt.=$email_tail;
 			send_email($emailto,$emailsubject,$ntt,$emailfrom,$emailcc,$emailbcc);
 			$ntt='';
 		};
@@ -1973,6 +1983,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		if($send_the_email==1){
 			if($emailsubject==''){$emailsubject='Server message';};
 			if($emailfrom==''){$emailfrom='server@'.$dname;};
+			$output.=$email_tail;
 			send_email($emailto,$emailsubject,$output,$emailfrom,$emailcc,$emailbcc);
 			$output='';
 		};

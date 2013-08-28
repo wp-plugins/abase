@@ -42,6 +42,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>emailbcc</strong> - emailbcc="" specify blind copy email address(es). Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
 	<li><strong>emailcc</strong> - emailcc="" specify copy email address(es). Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
 	<li><strong>emailfrom</strong> - emailfrom="" specify from email address. Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
+	<li><strong>emailorigin</strong> - emailorigin="" specifies origin information to add to the tail of every email. emailorigin="p" will display the page URL, emailorigin="r" will display the remote IP address of the browser, emailorigin="n" specifies nothing is to be displayed. When emailorigin="" is not specified then both the page URL and the remote IP address are displayed.
 	<li><strong>emailsubject</strong> - emailsubject="" specify email subject. emailto must be specified to send a email.
 	<li><strong>emailto</strong> - emailto="" specify email recipient. Either a specific email address or a column name that contains an email address. Only one email can be sent per shortcode execution.
 	<li><strong>fields</strong> - fields=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed in record view. Record view is a two column table with the field names in the first column and the values in the second column.
@@ -281,6 +282,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1.5 =
+
+Added PAGE_URI and REMOTE_ADDR to [abase] output and at the bottom of emails by default. Added emailorigin="none" emailorigin="page" and emailorigin="remote_addr" to disable the email origin line or have the email origin line include just the page or just the remote address. The remote address is the IP address of the remote browser.
+
 = 2.1.3 =
 
 Added notable="1" attribute so user can specify no opening and closing table tags, allowing much greater style and format control.
@@ -318,6 +323,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.1.5 =
+
+Added PAGE_URI and REMOTE_ADDR to [abase] output and at the bottom of emails by default. Added emailorigin="none" emailorigin="page" and emailorigin="remote_addr" to disable the email origin line or have the email origin line include just the page or just the remote address. The remote address is the IP address of the remote browser.
 
 = 2.1.3 =
 
