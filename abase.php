@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.5
+Version: 2.1.6
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -1669,23 +1669,35 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 							};
 			//	Record Link
 							if($key==$rlink){
+								$href_url=$rlink_url;
+								if($href_url==''){
+									if(strpos($_SERVER['REQUEST_URI'],'=')>0){
+										$href_url=$_SERVER['REQUEST_URI'].'&';
+									}else{
+										$href_url=$_SERVER['REQUEST_URI'].'?';
+									};
+								}else if(strpos($href_url,'=')>0){
+									$href_url='?'.$href_url.'&';
+								}else{
+									$href_url.='?';
+								};
 								if($rlink_alias>''){
 									if($rlink_target==''){
-										$abase_row .="<td $sty><a href=$rlink_url?$rlink_alias=".$sqlRow[$idField].">".$sqlRowKey."</a></td>";
-										$ntt .="<a href=$rlink_url?$rlink_alias=".$sqlRow[$idField].">".$sqlRowKey."</a>";
+										$abase_row .="<td $sty><a href=$href_url$rlink_alias=".$sqlRow[$idField].">".$sqlRowKey."</a></td>";
+										$ntt .="<a href=$href_url$rlink_alias=".$sqlRow[$idField].">".$sqlRowKey."</a>";
 
 									}else{
-										$abase_row .="<td $sty><a href=$rlink_url?$rlink_alias=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a></td>";
-										$ntt .="<a href=$rlink_url?$rlink_alias=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a>";
+										$abase_row .="<td $sty><a href=$href_url$rlink_alias=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a></td>";
+										$ntt .="<a href=$href_url$rlink_alias=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a>";
 									};
 								}else{
 									if($rlink_target==''){
-										$abase_row .="<td $sty><a href=$rlink_url?$idField=".$sqlRow[$idField].">".$sqlRowKey."</a></td>";
-										$ntt .="<a href=$rlink_url?$idField=".$sqlRow[$idField].">".$sqlRowKey."</a>";
+										$abase_row .="<td $sty><a href=$href_url$idField=".$sqlRow[$idField].">".$sqlRowKey."</a></td>";
+										$ntt .="<a href=$href_url$idField=".$sqlRow[$idField].">".$sqlRowKey."</a>";
 
 									}else{
-										$abase_row .="<td $sty><a href=$rlink_url?$idField=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a></td>";
-										$ntt .="<a href=$rlink_url?$idField=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a>";
+										$abase_row .="<td $sty><a href=$href_url$idField=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a></td>";
+										$ntt .="<a href=$href_url$idField=".$sqlRow[$idField]." target=".$rlink_target.">".$sqlRowKey."</a>";
 									};
 								};
 			//	Appended Link

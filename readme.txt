@@ -17,7 +17,7 @@ The ABASE shortcode accesses a MySQL database without having to code PHP. Over 3
 <h3>Shortcode</h3>
 The ABASE shortcode with a list of all the optional attributes is shown next. Each attribute is described in detail below.
 <P>
-[abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
+[abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
 <P>
 Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <B>sql</B>, <B>from</B>, or <B>table</B> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <B>emailto</B> attribute. The attribute names must be lower case.
 <P>
@@ -282,6 +282,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1.6 =
+
+Fixed rlink attribute so it works when pages are specified using page_id=X in the query string instead of requiring Permalinks being set to Post name. Set default rlink URL to REQUEST_URI (current page).
+
 = 2.1.5 =
 
 Added PAGE_URI and REMOTE_ADDR to [abase] output and at the bottom of emails by default. Added emailorigin="none" emailorigin="page" and emailorigin="remote_addr" to disable the email origin line or have the email origin line include just the page or just the remote address. The remote address is the IP address of the remote browser.
@@ -323,6 +327,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.1.6 =
+
+Fixed rlink attribute so it works when pages are specified using page_id=X in the query string instead of requiring Permalinks being set to Post name. Set default rlink URL to REQUEST_URI (current page).
 
 = 2.1.5 =
 
