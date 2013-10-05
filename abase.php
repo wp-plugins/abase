@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.6
+Version: 2.1.7
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -229,15 +229,16 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$bus311mtd_default_file_upload_directory='files'; // setting must be declared in abase.php and abase_plugin_options.php
 	$database_in=$incomingfromhandler['database'];
 	$db_in=$incomingfromhandler['db'];
-	if($db_in=='' && $database_in>''){$db_in=$database_in;}
+//	if($db_in=='' && $database_in>''){$db_in=$database_in;}
 	$pageURL = $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 	$remote_addr = $_SERVER["REMOTE_ADDR"];
 	$server_addr = $_SERVER["SERVER_ADDR"];
+// THIS CHANGED when database="" can override the database
 // global database variable defaults to database 1.
 // db or database will set the global database variable. [abase uses the global database variable if db or database is not specified.
 // [abase2 and [abase3 use databases 2 or 3 respective but does not change the global database variable.
 
-	if($db_in>='1' && $db_in<='3'){$GLOBALS['bus311mtd_setdb']=$db_in;};
+	if($db_in>='1' && $db_in<='3'){$GLOBALS['bus311mtd_setdb']=$db_in; $GLOBALS['bus311mtd_setdatabase']='';};
 
 	if($GLOBALS['bus311mtd_setdb']!='1' && $GLOBALS['bus311mtd_setdb']!='2' && $GLOBALS['bus311mtd_setdb']!='3'){$GLOBALS['bus311mtd_setdb']='1';};
 
@@ -274,11 +275,31 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$db_num=$db_in;
 	if($db_num==1){$db_num='';};
 
+	$database_overridden='';
+	$sqlDatabase=trim($sqlDatabase);
+
+	if($pval!=2 && $pval!=3){
+		if(strlen($database_in)>1){$GLOBALS['bus311mtd_setdatabase']=$database_in;};
+		if(strlen($GLOBALS['bus311mtd_setdatabase'])>1){
+			if($sqlDatabase != $GLOBALS['bus311mtd_setdatabase']){$database_overridden=$sqlDatabase;};
+			$sqlDatabase=$GLOBALS['bus311mtd_setdatabase'];
+		};
+	}else{
+		if(strlen($database_in)>1){$sqlDatabase=$database_in;};
+	};
+
+// if database="" is never specified, then database is specified by the db_num.
+// if database="" is specified, it is specified for the db_num.
+// If the db_num changes, database returns to the default specified by db_num.
+
+	$sqlDatabase=trim($sqlDatabase);
+
 	if($sqlHost==''){$sqlHost=DB_HOST;};
 	if($sqlDatabase==''){$sqlDatabase=DB_NAME;};
 	if($sqlPass==''){$sqlPass=DB_PASSWORD;};
 	if($sqlUser==''){$sqlUser=DB_USER;};
 
+	$sqlDatabase=trim($sqlDatabase);
 
 	$GLOBALS['bus311mtd_instance']+=1;
 	$date = date("Y-m-d H:i:s");
@@ -361,8 +382,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		};
 		$concatenated_values.=$val;
 		if($key!='echo'){$concatenated_values_except_echo.=$val;};
-		if($key!='db'){$concatenated_values_except_db.=$val;};
-		if($key!='db' && $key!='echo'){$concatenated_values_except_db_echo.=$val;};
+		if($key!='db' && $key!='database'){$concatenated_values_except_db.=$val;};
+		if($key!='db' && $key!='echo' && $key!='database'){$concatenated_values_except_db_echo.=$val;};
 		$complete_short_code.=' '.$key.'="'.$val.'"';
 	};
 	
@@ -938,16 +959,17 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		}else{
 			$top_output.='<B>'.htmlspecialchars($full_short_code).'</B>';
 		};
-
+		$sqlUserItalics="<I>$sqlUser</I>";
+		if(strlen($database_overridden)>1){$sqlUserItalics.='*';};
 		if($concatenated_values_except_db_echo==''){
 			$top_output.=' <font size=2>(';
 			$ver.=file_get_contents('version.txt',FILE_USE_INCLUDE_PATH);
 			$top_output.=$ver;
 			$db_list=str_replace(',','<li>',$database_table_rows);
 			if($db_list>''){
-				$top_output.=")<BR>Page: <I>$pageURL</I> from <I>$remote_addr</I><BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> containing tables:<ol><li>$db_list</ol>";
+				$top_output.=")<BR>Page: <I>$pageURL</I> from <I>$remote_addr</I><BR>User: $sqlUserItalics<BR>Database: <I>$sqlDatabase</I> containing tables:<ol><li>$db_list</ol>";
 			}else{
-				$top_output.=")<BR>Page: <I>$pageURL</I> from <I>$remote_addr</I><BR>User: <I>$sqlUser</I><BR>Database: <I>$sqlDatabase</I> contains no tables.<BR>";
+				$top_output.=")<BR>Page: <I>$pageURL</I> from <I>$remote_addr</I><BR>User: $sqlUserItalics<BR>Database: <I>$sqlDatabase</I> contains no tables.<BR>";
 			};
 			if($lost_table_error){$top_output.=substr($lost_table_error,0,strlen($lost_table_error)-4);};
 			$top_output.='</font>';
@@ -1504,7 +1526,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					$output .='<table style="'.$style.'"'.">";
 				}else{
 //					$output .="<table style='width:auto; padding:0 1.0em;'>";
-					$output .="<table style='width:auto;'>";
+//					$output .="<table style='width:auto;'>";
+					$output .="<table>";
 				};
 			};
 			if($view=='record'){

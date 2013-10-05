@@ -3,7 +3,7 @@ Contributors: richhalverson
 Donate link: http://abase.com
 Tags: abase, sql, query, shortcode, mysql, database, email
 Requires at least: 3.3
-Tested up to: 3.6
+Tested up to: 3.6.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,8 +35,8 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>center</strong> - center=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more table columns to center when displaying. Note: <strong>center="*"</strong> indicates all columns.
 	<li><strong>cols</strong> - cols=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed as a table. Two or more records to be displayed are required. Designed to be used in conjunction with fields specification. See &lt;field_spec&gt; below under <B>fields</B>. Note: <strong>cols="*"</strong> indicates all columns.
 	<li><strong>columns</strong> - columns=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the columns to be displayed in a table. Zero or more records will be displayed. See &lt;field_spec&gt; below under <B>fields</B>. Note: <strong>columns="*"</strong> indicates all columns.
-	<li><strong>database</strong> - database="" Change default database. Choose database 1, 2  or 3 as specified in Settings. Exactly the same as db (next).
-	<li><strong>db</strong> - db="" Change default database. Same as database.
+	<li><strong>database</strong> - database="" Override default database specified in Settings. Sticky. (Specify once on page and override applies to remaining short codes until new db="" specification.)
+	<li><strong>db</strong> - db="" Change default database. Choose database 1, 2  or 3 as specified in Settings.  Sticky. (Specify once on page and override applies to remaining short codes.)
 	<li><strong>echo</strong> - echo="&lt;color&gt;" will display (i.e., echo) the shortcode in the specified HTML &lt;color&gt; (e.g., echo="red").
 	<li><strong>elements</strong> - elements=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more fields in a form with form elements for either searching, adding to or updating the database.
 	<li><strong>emailbcc</strong> - emailbcc="" specify blind copy email address(es). Either a specific email address or a column name that contains an email address. emailto must be specified to send a email.
@@ -282,6 +282,12 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1.7 =
+
+Changed database="" attribute to override database in Settings. (database="" used to be synonymous with db="")
+
+Trailing spaces tolerable in Settings entries. Removed default style="width:auto" in tables. 
+
 = 2.1.6 =
 
 Fixed rlink attribute so it works when pages are specified using page_id=X in the query string instead of requiring Permalinks being set to Post name. Set default rlink URL to REQUEST_URI (current page).
@@ -327,6 +333,12 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.1.7 =
+
+Changed database="" attribute to override database in Settings. (database="" used to be synonymous with db="")
+
+Trailing spaces tolerable in Settings entries. Removed default style="width:auto" in tables. 
 
 = 2.1.6 =
 
