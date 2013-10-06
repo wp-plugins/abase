@@ -282,11 +282,11 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
-= 2.1.7 =
+= 2.1.8 =
 
 Changed database="" attribute to override database in Settings. (database="" used to be synonymous with db="")
 
-Trailing spaces tolerable in Settings entries. Removed default style="width:auto" in tables. 
+Trailing spaces tolerable in Settings entries. Removed default style="width:auto" in tables except for forms. 
 
 = 2.1.6 =
 
@@ -338,7 +338,7 @@ First version available through WordPress.
 
 Changed database="" attribute to override database in Settings. (database="" used to be synonymous with db="")
 
-Trailing spaces tolerable in Settings entries. Removed default style="width:auto" in tables. 
+Trailing spaces tolerable in Settings entries. Removed default style="width:auto" in tables except for forms. 
 
 = 2.1.6 =
 

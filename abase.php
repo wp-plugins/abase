@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.7
+Version: 2.1.8
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -1526,8 +1526,11 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					$output .='<table style="'.$style.'"'.">";
 				}else{
 //					$output .="<table style='width:auto; padding:0 1.0em;'>";
-//					$output .="<table style='width:auto;'>";
-					$output .="<table>";
+					if($form>=1){
+						$output .="<table style='width:auto;'>";
+					}else{
+						$output .="<table>";
+					};
 				};
 			};
 			if($view=='record'){
