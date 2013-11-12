@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.8
+Version: 2.1.9
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -1157,14 +1157,18 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		$sqlResult = mysql_query($sqlQuery, $conn)
 			or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes'].$lost_table_error."<B>Fatal Error</B> (".__LINE__.")</font><BR><font style='background-color: white;'>" . mysql_error() . "</font><BR><font style='color: $error_color; background-color: white;'>$mysql_msg  $temp</font>");
 		$num_rows=0;
-//		$top_output.="\n\n<!-- $sqlResult -->\n\n";
+// $top_output.="\n\n<!-- HERE 11/11/2013 $num_rows  $form  ".$_POST['_delete']." - $sqlResult -->\n\n";
 		if($sqlResult && $sqlResult != '1'){
 			$num_rows = mysql_num_rows($sqlResult);
 			$delete_took_place=0;
+// $top_output.="\n\n<!-- HERE 11/12/2013 1 num_rows = $num_rows  -->\n\n";
 			if($num_rows==1 && $form==4 && $_POST['_delete']){
-				$idField_=$idField.'_';
+//				$idField_=$idField.'_'; 
+				$idField_=$idField; // 20131112
+// $top_output.="\n\n<!-- HERE 11/12/2013 2 _POST[$idField_] =  ".$_POST[$idField_]." -  _GET[$idField] =  ".$_GET[$idField]." -->\n\n";
 				if($_POST[$idField_]>0 && $_POST[$idField_]==$_GET[$idField]){
 					$sqlDelete="DELETE FROM $table WHERE $idField='".$_GET[$idField]."'";
+// $top_output.="\n\n<!-- HERE 11/12/2013 3 $sqlDelete  -->\n\n";
 					if(strlen($password_in)>0){
 						$password_value=addslashes($_POST[$password_in.'_']);
 						$sqlDelete.=" AND `$password_in`='$password_value'";

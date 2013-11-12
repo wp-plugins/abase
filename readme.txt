@@ -3,7 +3,7 @@ Contributors: richhalverson
 Donate link: http://abase.com
 Tags: abase, sql, query, shortcode, mysql, database, email
 Requires at least: 3.3
-Tested up to: 3.6.1
+Tested up to: 3.7.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -282,6 +282,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.1.9 =
+
+Fixed delete bug. Delete works again.
+
 = 2.1.8 =
 
 Changed database="" attribute to override database in Settings. (database="" used to be synonymous with db="")
@@ -334,7 +338,11 @@ First version available through WordPress.
 
 == Upgrade notice ==
 
-= 2.1.7 =
+= 2.1.9 =
+
+Fixed delete bug. Delete works again.
+
+= 2.1.8 =
 
 Changed database="" attribute to override database in Settings. (database="" used to be synonymous with db="")
 
