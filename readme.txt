@@ -17,7 +17,7 @@ The ABASE shortcode accesses a MySQL database without having to code PHP. Over 3
 <h3>Shortcode</h3>
 The ABASE shortcode with a list of all the optional attributes is shown next. Each attribute is described in detail below.
 <P>
-[abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
+[abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
 <P>
 Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <B>sql</B>, <B>from</B>, or <B>table</B> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <B>emailto</B> attribute. The attribute names must be lower case.
 <P>
@@ -80,6 +80,8 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>limit</strong> - Specifies a LIMIT clause.
 	<li><strong>notable</strong> - notable="1" will cause the table in a cols="" or columns="" specification to display without the beginning (&lt;table&gt;) or ending table tag (&lt;/table&gt;).
 	<li><strong>notitle</strong> - notitle="1" will cause the table in a cols="" or columns="" specification to display without the column titles.
+	<li><strong>or</strong> - or=" &lt;column_set&gt; ( , &lt;column_set&gt; )" specifies sets of columns in a search form that are compated to the same operand in the WHERE clause.
+		<ul><li>&lt;column_set&gt; ::=  &lt;column&gt; ( | &lt;column&gt; )
 	<li><strong>order</strong> - Specifies the ORDER BY clause.
 	<li><strong>password</strong> - password="" specify password field. Password entry and match is required to update or delete table record.
 	<li><strong>required</strong> - required=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns in an insert or update form that must have a filled in value or the submit will not be accepted. An error alert message will appear.
@@ -282,6 +284,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.2 =
+
+Added minimum and maximum time an insertion form is valid (protecting against bot inserts). Fixed bug causing problems when table fields names are Wordpress reserved words (e.g., "name"). Added or="" attribute allowing a form element to be compared with more than one field name in the WHERE clause of an SQL search (e.g., or="first_name|last_name,title|description")
+
 = 2.1.9 =
 
 Fixed delete bug. Delete works again.
@@ -337,6 +343,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.2 =
+
+Added minimum and maximum time an insertion form is valid (protecting against bot inserts). Fixed bug causing problems when table fields names are Wordpress reserved words (e.g., "name"). Added or="" attribute allowing a form element to be compared with more than one field name in the WHERE clause of an SQL search (e.g., or="first_name|last_name,title|description")
 
 = 2.1.9 =
 

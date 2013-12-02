@@ -87,14 +87,22 @@
 					update_option('bus311mtd_show', $dbshow);
 				};
 			};
+			$form_min=$_POST['bus311mtd_form_min'];	update_option('bus311mtd_form_min', $form_min);
+			$form_max=$_POST['bus311mtd_form_max'];	update_option('bus311mtd_form_max', $form_max);
 			?>  
 			<div class="updated"><p><strong><?php _e('Options saved.' ); ?></strong></p></div>  
 			<?php 
 
 		};
 	//Normal page display
+
+
 		$dbshow='';if(get_option('bus311mtd_show')){$dbshow = get_option('bus311mtd_show');}else{update_option('bus311mtd_show', '');};
 
+		$form_min='';if(get_option('bus311mtd_form_min')){$form_min = get_option('bus311mtd_form_min');}else{update_option('bus311mtd_form_min', '0');};
+		$form_max='';if(get_option('bus311mtd_form_max')){$form_max = get_option('bus311mtd_form_max');}else{update_option('bus311mtd_form_max', '0');};
+
+//		$valid_forms='';if(get_option('bus311mtd_current_forms')){$valid_forms = get_option('bus311mtd_current_forms');}else{update_option('bus311mtd_current_forms', '');};
 		$dbhost='';if(get_option('bus311mtd_dbhost')){$dbhost = get_option('bus311mtd_dbhost');}else{update_option('bus311mtd_dbhost', '');};
 		$dbname='';if(get_option('bus311mtd_dbname')){$dbname = get_option('bus311mtd_dbname');}else{update_option('bus311mtd_dbname', '');};
 		$dbuser='';if(get_option('bus311mtd_dbuser')){$dbuser = get_option('bus311mtd_dbuser');}else{update_option('bus311mtd_dbuser', '');};
@@ -166,10 +174,21 @@
 		<?php 			if($i==1){
 		?>
 					
+					<tr>
+						<td colspan=2>&nbsp;</td>
+						<td colspan=2 align=left>&nbsp;</td>
+					</tr>
+					<tr>
+						<td align=right bgcolor="DDDDDD">Form Life:</td>
+						<td><nobr>Min:<input type="text" name="bus311mtd_form_min" size="1" value="<?php echo $form_min; ?>">,</nobr> <nobr>Max:<input type="text" name="bus311mtd_form_max" size="2" value="<?php echo $form_max; ?>"></nobr>
+						<td colspan=2>in Seconds. Valid form life. Before or afterwards, Insert, Update or Delete<BR>form not valid and database update will not occur. Set Max to 0 for non-enforcement.
+						</td>
+					</tr>
 
 					<tr>
 						<td colspan=2><h3>Database Settings:</h3></td>
-						<td colspan=2 align=left><input type=checkbox name=bus311mtd_show value=1 <?php  if($dbshow>0){echo "checked"; }; ?>>Expand to full settings</td>
+						<td colspan=2 align=left><input type="checkbox" name="bus311mtd_show" value="1" <?php  if($dbshow>0){echo "checked"; }; ?>>Expand to full settings
+						</td>
 					</tr>
 		<?php 					
 					}else if($i>1){
@@ -221,9 +240,9 @@
 						</tr>
 						<?php  if($sdbn==''){ ?>
 						<tr><td align=right bgcolor="DDDDDD">&nbsp;</td>
-							<td colspan=3>where <B>/&lt;table_name&gt;/&lt;column_name&gt;/&lt;primary_index&gt;/</B> specifies the Internet accessible subdirectory within the directory you specify, where the file named <B>&lt;file_name&gt;</B> will be uploaded. The field type of <nobr><B>&lt;table_name&gt;.&lt;column_name&gt;</B></nobr> should be large enough to store the full path-file name (e.g., <B>varchar(255)</B>).<BR>
+							<td colspan=3><table cellspacing=0 cellpadding=0 width=700><tr><td>where <B>/&lt;table_name&gt;/&lt;column_name&gt;/&lt;primary_index&gt;/</B> specifies the Internet accessible subdirectory within the directory you specify, where the file named <B>&lt;file_name&gt;</B> will be uploaded. The field type of <nobr><B>&lt;table_name&gt;.&lt;column_name&gt;</B></nobr> should be large enough to store the full path-file name (e.g., <B>varchar(255)</B>).<BR>
 							The root directory name that you enter must be non-blank and will be created upon a file upload if it does not exist. A default root directory name of <B>/<?php  echo $bus311mtd_default_file_upload_directory; ?>/</B> will be created if none is specified. Be careful not to choose a directory name that could cause file names to interfere with other applications.							
-							
+							</td></tr></table>
 							</td>
 						</tr>
 						<?php  }; ?>

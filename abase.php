@@ -2,8 +2,8 @@
 /*
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
-Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.1.9
+Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
+Version: 2.2
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -13,7 +13,6 @@ License: GPLv2. See http://www.gnu.org/licenses/gpl.html
 
 // require 'plugin-updates/plugin-update-checker.php';
 // $MyUpdateChecker = new PluginUpdateChecker('http://abase.com/plugins/abase.json',__FILE__,'abase');
-
 
 add_action( 'admin_menu', 'table_display_plugin_menu' );
 
@@ -30,7 +29,6 @@ function register_my_setting() {
 } 
 
 add_action( 'admin_init', 'register_my_setting' );
-
 
 
 include("abase_plugin_options.php");
@@ -50,7 +48,8 @@ function your_plugin_settings_link($links) {
 $plugin = plugin_basename(__FILE__); 
 add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link' );
 function abase_handler($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	record_progress(__LINE__,'abase');
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "or"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(0,$incomingfrompost,$content);
 	return $abase_output;
 };
@@ -58,24 +57,147 @@ function abase_handler($incomingfrompost, $content = null) {
 // "image_style"=>'', "input_styles"=>'', "styles"=>'' are no longer used and should be removed
 
 function abase_handler2($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	record_progress(__LINE__,'abase2');
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "or"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(2,$incomingfrompost,$content);
 	return $abase_output;
 };
 function abase_handler3($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	record_progress(__LINE__,'abase3');
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "or"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(3,$incomingfrompost,$content);
 	return $abase_output;
 };
 function ABASE_handlerA($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	record_progress(__LINE__,'ABASE');
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "or"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function('-1',$incomingfrompost,$content);
 	return $abase_output;
 };
 function bus311tabledisplay_handler($incomingfrompost, $content = null) {
-	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
+	record_progress(__LINE__,'bus311-table-display');
+	$incomingfrompost=shortcode_atts(array("db"=>'', "form"=>'', "table"=>'', "elements"=>'', "emailto"=>'', "emailfrom"=>'', "emailsubject"=>'', "emailcc"=>'', "emailbcc"=>'', "emailorigin"=>'', "password"=>'', "required"=>'', "select"=>'', "from"=>'', "sql"=>'', "where"=>'', "or"=>'', "group"=>'', "order"=>'', "limit"=>'', "cols"=>'', "columns"=>'', "fields"=>'', "files"=>'', "images"=>'', "notable"=>'', "notitle"=>'', "rownum"=>'', "style"=>'', "center"=>'', "left"=>'', "right"=>'', "rlink"=>'', "alink"=>'', "ack"=>'', "echo"=>'', "link"=>'', "update"=>'', "search"=>'', "insert"=>'', "database"=>'', "image_style"=>'', "input_styles"=>'', "styles"=>''), $incomingfrompost);
 	$abase_output = bus311tabledisplay_function(1,$incomingfrompost,$content);
 	return $abase_output;
+};
+
+
+function record_progress($ln,$msg){
+	$testing_remote_address='';
+	if($testing_remote_address!=''){
+		$progress_log_file="abase_progress.txt";
+		$date = date("r");
+		$secs = date('s');
+		$remote_addr=$_SERVER['REMOTE_ADDR'];
+		if($remote_addr==$testing_remote_address){
+			$sip=preg_split("/\./",$remote_addr); $submitip=(($sip[0]*31+$sip[1])*31+$sip[2])*31+$sip[3];
+			$submitip=time().':'.$remote_addr;
+			$addr_sip="$remote_addr ($submitip)";
+			if(strtolower($msg)=='start'){
+				$msg2="********************************* START EXECUTION ********************************** $addr_sip";
+				$msg3="\n\n$msg2\n$date, Line: $ln, Path: ".$_SERVER['REQUEST_URI'];
+				if($_SERVER['QUERY_STRING']>''){$msg3.="?".$_SERVER['QUERY_STRING'];};
+				if($_POST['_submit']>''){$msg3.="  Submitter Code: ".$_POST['_submit'];};
+				$msg3.="\n";
+				if($GLOBALS['bus311mtd_short_code']>''){$msg3.="\n".$GLOBALS['bus311mtd_short_code']."\n";};
+				$postvals='';
+				foreach ($_POST as $key=>$values){
+					if(is_array($values)){
+						$iv=0;
+						foreach ($values as $value){
+							$postvals.="\n".$key.'['.$iv.'] = '.$value;
+							$iv+=1;
+						};
+					}else{
+						$val=$values;
+						if(strlen($val)>1000){
+							$postvals.="\n".$key.' = '.$val.' ...';
+						}else{
+							$postvals.="\n".$key.' = '.$val;
+						};
+					};
+				};
+				if($postvals>''){$msg3.=$postvals."\n";};
+				error_log($msg3, 3, $progress_log_file);
+			}else if(strtolower($msg)=='end'){
+				$msg2="********************************** END EXECUTION *********************************** $addr_sip";
+				error_log("\n$date, Line:".$ln."\n".$msg2."\n\n", 3, $progress_log_file);
+			}else{
+				error_log("\nLine ".$ln." ($secs): ".$msg."\n", 3, $progress_log_file);
+			};
+		};
+	};
+};
+
+function verify_form(){
+	$timeip=$_POST['_submit'];
+	$form_min = get_option('bus311mtd_form_min');
+	$form_max = get_option('bus311mtd_form_max');
+
+//	if $form_min==0 and $form_max==0 then no enforcement
+//	if $form_max>0 and $form_min==0 then no min time
+//	if $form_min>0 and $form_max==0 then $form_max=86400
+//	return 1 for VALID. return -2 for expired. return 0 for doesn't exist. return -1 for minimum time not yet reached.
+
+	if($form_min>0 || $form_max>0){
+		$dir="abase_valid_forms";
+		if(!is_dir($dir)){mkdir($dir);};
+		$ret=0;
+		$enforce=1;
+		if($form_min==0 && $form_max==0){
+			$enforce=0;
+		}else if($form_max==0){
+			$form_max=86400;
+		};
+		if($enforce==1){
+			if(file_get_contents("$dir/$timeip",true)){
+				$tim=file_get_contents("$dir/$timeip",true);
+				if(time()<$tim+$form_min){
+	//	minimum time hasn't been reached yet
+					$ret=-1;
+				}else if(time()<=$tim+$form_max){
+	//	minimum time has been reached, maximum time has not been reached VALID
+					$ret=1;
+					unlink("$dir/$timeip");
+				}else{
+	//	maximum time has been exceeded
+					$ret=-2;
+				};
+			}else{
+				$ret=0;
+			};
+		}else{
+			$ret=1;
+		};
+	// clean house
+		foreach(glob($dir.'/*.*') as $file) {
+			$tim=file_get_contents($file,true);
+			if(time()>$tim+$form_max){
+				unlink($file);
+			};
+		};
+	}else{
+		$ret=1;
+	};
+	return $ret;
+};
+
+function add_valid_form($timeip){
+	$form_min = get_option('bus311mtd_form_min');
+	$form_max = get_option('bus311mtd_form_max');
+	$dir="abase_valid_forms";
+	if($form_min>0 || $form_max>0){
+		if(!is_dir($dir)){mkdir($dir);};
+		list($tim,$ip)=preg_split("/\:/",$timeip);
+		file_put_contents("$dir/$timeip",$tim);
+// clean house
+		foreach(glob($dir.'/*.*') as $file) {
+			$tim=file_get_contents($file,true);
+			if(time()>$tim+$form_max){
+				unlink($file);
+			};
+		};
+	};
 };
 
 function bus311tabledisplay_field_split($key_in){
@@ -106,6 +228,10 @@ function bus311tabledisplay_field_split($key_in){
 		$column_title=substr($wkey,0,strpos($wkey,'^'));
 		$wkey=substr($wkey,strpos($wkey,'^')+1);
 	};
+//	if(substr($wkey,0,1)=='(' && strpos($wkey,')')>0){
+//		$column_name=substr($wkey,0,strpos($wkey,')'));
+//		$wkey=substr($wkey,strpos($wkey,')')+1);
+//	};
 
 	if(strpos($wkey,'$')){
 		$submit_button='$';
@@ -178,7 +304,7 @@ function bus311tabledisplay_field_split($key_in){
 		$foreign_column=substr($wkey,strpos($wkey,'|')+1);
 		$wkey=substr($wkey,0,strpos($wkey,'|'));
 	};
-	$column_name=$wkey;
+	if($column_name==''){$column_name=$wkey;};
 	if($submit_button=='$' && $button_value==''){$button_value='$';};
 	if($operand=='' && $operand_is_constant==0){$operand=$column_name;};
 	if($op==''){$op='=';};
@@ -219,6 +345,8 @@ function send_email($to='',$subject='',$body='',$from='',$cc='',$bcc=''){
 };
 
 function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
+	record_progress(__LINE__,'start');
+
 	$debug_string='';
 	$error_string='';
 	$fatal_error=0;
@@ -312,6 +440,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$where_in=$incomingfromhandler['where'];
 
 	$group_in=$incomingfromhandler['group'];
+	$or_in=$incomingfromhandler['or'];
 	$order_in=$incomingfromhandler['order'];
 	$limit_in=$incomingfromhandler['limit'];
 	$notitle_in=$incomingfromhandler['notitle'];
@@ -386,7 +515,6 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		if($key!='db' && $key!='echo' && $key!='database'){$concatenated_values_except_db_echo.=$val;};
 		$complete_short_code.=' '.$key.'="'.$val.'"';
 	};
-	
 	if(strlen($content)>0){
 		$short_code.=']';
 		$full_short_code.=']';
@@ -399,6 +527,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		$complete_empty_short_code.=']';
 	};
 	$GLOBALS['bus311mtd_page_shortcodes'].='#<B>'.$GLOBALS['bus311mtd_instance'].'.</B> '.htmlspecialchars($full_short_code).'<BR>';
+	$GLOBALS['bus311mtd_short_code']=$full_short_code;
 
 	$sup_db_in='';
 	if($db_in>'1' && $pval<2){$sup_db_in="<sup> $db_in</sup>";};
@@ -422,6 +551,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		for($j=0;$j<count($eles);$j+=1){
 			if($eles[$j]>''){
 				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($eles[$j]);
+				$asurro='*'.$surro;
 				if($key>''){$elements_in.=','.$key;};
 			};
 		};
@@ -433,7 +563,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	}else if(strtolower(substr($emailorigin,0,1))=='p'){$email_tail="<BR>\n_____<BR>\n<font size='1'>$pageURLemail</font>";
 	}else if(strtolower(substr($emailorigin,0,1))=='r'){$email_tail="<BR>\n_____<BR>\n<font size='1'>$remote_addr</font>";
 	};
-
+	$sip=preg_split("/\./",$remote_addr); $submitip=(($sip[0]*31+$sip[1])*31+$sip[2])*31+$sip[3];$submitip=time().':'.$remote_addr;
+	$GLOBALS['bus311mtd_submitip']=$submitip;
 	$cols_columns_fields='';
 	if($cols_in>'' && $cols_in!='*'){$cols_columns_fields.=','.$cols_in;};
 	if($columns_in>'' && $columns_in!='*'){$cols_columns_fields.=','.$columns_in;};
@@ -442,17 +573,17 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 
 	$lost_table_error='';
 
-	$conn = mysql_connect($sqlHost, $sqlUser, $sqlPass)	or die("<BR><font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes']."<B>Fatal Error</B>  (".__LINE__.") - Couldn't connect to MySQL server on '$sqlHost'.<BR><BR>This shortcode uses Database #$db_in. If this is correct, then see the <B>Warning</B> above. One or more of the following settings for Database #$db_in is probably not correct.<OL style='background-color: white;'><LI> Database host: '$sqlHost'.<LI> Database user: '$sqlUser'.<LI> Database user password: '$sqlPass'.</OL></font>.");
+	$abase_conn = mysql_connect($sqlHost, $sqlUser, $sqlPass)	or die("<BR><font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes']."<B>Fatal Error</B>  (".__LINE__.") - Couldn't connect to MySQL server on '$sqlHost'.<BR><BR>This shortcode uses Database #$db_in. If this is correct, then see the <B>Warning</B> above. One or more of the following settings for Database #$db_in is probably not correct.<OL style='background-color: white;'><LI> Database host: '$sqlHost'.<LI> Database user: '$sqlUser'.<LI> Database user password: '$sqlPass'.</OL></font>.");
 
 
-	$db = mysql_select_db($sqlDatabase, $conn)
+	$db = mysql_select_db($sqlDatabase, $abase_conn)
 		or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes']."<B>Fatal Error</B>  (".__LINE__.") - Couldn't select database '$sqlDatabase'.<BR>" . mysql_error() . "<BR><font style='color: $error_color; background-color: white;'><BR>This shortcode uses Database #$db_in. If this is correct, then one or more of the following settings for Database #$db_in is probably not correct.<OL style='background-color: white;'><LI> Database name: '$sqlDatabase'.<LI> Database '$sqlDatabase' must be accessible by user '$sqlUser'.</OL></font>");
 	
 // get all the tables for this database in 
 //SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA='jasonlee_campus'
-	$sqlTables = mysql_query("SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA='$sqlDatabase'", $conn)
+	record_progress(__LINE__,"SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA='$sqlDatabase'");
+	$sqlTables = mysql_query("SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA='$sqlDatabase'", $abase_conn)
 		or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes'].$lost_table_error."<B>Fatal Error</B>  (".__LINE__.")<BR><BR></font><font style='background-color: white;'>" . mysql_error() . "</font></font>");
-
 	$database_tables='';
 	$database_table_rows='';
 	$database_table_types=array();
@@ -463,8 +594,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	};
 	$database_tables=substr($database_tables,2);
 	$database_table_rows=substr($database_table_rows,2);
-
-	$sqlTables2 = mysql_query("SHOW TABLES FROM $sqlDatabase", $conn)
+	record_progress(__LINE__,"SHOW TABLES FROM $sqlDatabase");
+	$sqlTables2 = mysql_query("SHOW TABLES FROM $sqlDatabase", $abase_conn)
 		or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes'].$lost_table_error."<B>Fatal Error</B>  (".__LINE__.")<BR><BR></font><font style='background-color: white;'>" . mysql_error() . "</font></font>");
 	$inaccessible_tables='';
 	$accessible_tables='';
@@ -761,7 +892,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		if($select==''){$sqlQuery.='*';}else{$sqlQuery.=$select;};
 		$sqlQuery.=' FROM '.$from;
 		if($table>'' && $table_error==''){
-			$sqlColumns = mysql_query("SHOW COLUMNS FROM $table", $conn)
+			record_progress(__LINE__,"SHOW COLUMNS FROM $table");
+			$sqlColumns = mysql_query("SHOW COLUMNS FROM $table", $abase_conn)
 				or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes'].$lost_table_error."<B>Fatal Error</B>  (".__LINE__.")<BR><BR><font style='background-color: white;'>" . mysql_error() . "</font><BR><BR><font style='color: $error_color; background-color: white;'>1. Be sure table \"$table_in\" is spelled correctly with the correct upper and lower case in the table=\"$table_in\" attribute. Valid table names in <I>$sqlDatabase</I> are <I>$database_tables</I>.<BR>2. Be sure \"$sqlDatabase\" is the correct database as specified in Settings.</font>");
 
 			$qwhere='';
@@ -770,7 +902,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					$idField=$sqlCol['Field'];
 				};
 				if($_GET[$sqlCol['Field']]>''){
-					$qwhere.=' AND '.$sqlCol['Field']."='".$_GET[$sqlCol['Field']]."'";
+					$qwhere.=' AND `'.$sqlCol['Field']."`='".$_GET[$sqlCol['Field']]."'";
 				};
 				$fieldType[$sqlCol['Field']]=$sqlCol['Type'];
 			};
@@ -778,8 +910,9 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 // SELECT TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE WHERE REFERENCED_TABLE_SCHEMA = 'richardh_campus'
 			$sqlQ="SELECT TABLE_NAME,COLUMN_NAME,REFERENCED_TABLE_SCHEMA,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME FROM information_schema.KEY_COLUMN_USAGE";
 			$sqlQ.=" WHERE TABLE_SCHEMA='$sqlDatabase' AND REFERENCED_TABLE_SCHEMA='$sqlDatabase'";
-			$sqlKeys = mysql_query($sqlQ, $conn)
-				or die("Couldn't perform query (".__LINE__."): " . mysql_error() . '.');
+			record_progress(__LINE__,$sqlQ);
+			$sqlKeys = mysql_query($sqlQ, $abase_conn)
+				or die("Couldn't perform query (".__LINE__."): $sqlQ -- " . mysql_error() . '.');
 			$i=0;
 			while($sqlKey = mysql_fetch_assoc($sqlKeys)){
 				$key_TABLE[]=$sqlKey['TABLE_NAME']; 
@@ -789,7 +922,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			};
 			$tables[]=$table; // insert table and itself as alias
 			$tables[]=$table;
-			$sqlColumns = mysql_query("SHOW COLUMNS FROM ".$table, $conn)
+			record_progress(__LINE__,"SHOW COLUMNS FROM ".$table);
+			$sqlColumns = mysql_query("SHOW COLUMNS FROM ".$table, $abase_conn)
 				or die("Couldn't perform query (".__LINE__."): SHOW COLUMNS FROM ".$table . mysql_error() . '.');
 			while($sqlColumn = mysql_fetch_assoc($sqlColumns)){
 				$column_list.=$sqlColumn['Field'].',';
@@ -814,7 +948,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 						$fromJoin.=" LEFT JOIN `".$key_REF_TABLE[$i]."` AS `".$tableAlias.'`';
 						$fromJoin.=" ON `".$alias."`.".$key_COLUMN[$i];
 						$fromJoin.="=`".$tableAlias."`.".$key_REF_COLUMN[$i];
-						$sqlColumns = mysql_query("SHOW COLUMNS FROM `".$key_REF_TABLE[$i].'`', $conn)
+						record_progress(__LINE__,"SHOW COLUMNS FROM `".$key_REF_TABLE[$i].'`');
+						$sqlColumns = mysql_query("SHOW COLUMNS FROM `".$key_REF_TABLE[$i].'`', $abase_conn)
 							or die("Couldn't perform query (".__LINE__."): SHOW COLUMNS FROM ".$key_REF_TABLE[$i] . mysql_error() . '.');
 
 						while($sqlColumn = mysql_fetch_assoc($sqlColumns)){
@@ -838,7 +973,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$key_processed=',';
 			for($j=0;$j<count($cols);$j+=1){
 				if($cols[$j]>''){
-					list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
+					list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);$asurro='*'.$surro;
 					if(!strpos(' '.$column_list,",$key,") && !strpos(' '.$key_processed,",$key,")){
 						$invalid_cols.=", $key";
 						$num_ics+=1;
@@ -886,39 +1021,108 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		// _term[]" type=hidden value="'.$pseudo.','.$key.','.$op.','.$surro.','.$pct.','.$pct0.','.$constant
 				foreach ($_POST['_term'] as $term) {
 					$parts=preg_split('/\,/',$term);
-					list($pseudo,$key,$keyOption,$submit,$oper,$surro,$pct,$pct0,$constant)=preg_split('/\,/',$term);
+					list($pseudo,$key,$keyOption,$submit,$oper,$surro,$pct,$pct0,$constant,$or)=preg_split('/\,/',$term);$asurro='*'.$surro;
+					$and_or=' AND ';
+					if(strtolower($or)=='or'){$and_or=' or ';};
+
 		//                   0     1    2      3     4    5       6
 		//	CHECK TO MAKE SURE $key IS A FIELD IN TABLE
-					if(strpos($column_list,','.$key.',')){
-						if($_POST[$surro]>''){
+					if(strpos(" $column_list",','.$key.',')){
+// record_progress(__LINE__,"$column_list : $key - ".$_POST[$asurro]);
+
+						if($_POST[$asurro]>''){
 							if(($pct=='%' || $pct0=='%') && $oper=='='){
-								$wher.=" AND ".$key." LIKE '".$pct0.$_POST[$surro].$pct."'";
-								$p3=$_POST[$surro];
+								$wher.=strtoupper($and_or);
+								if(is_array($_POST['_or'])){
+									$wher3='';
+									foreach ($_POST['_or'] as $or_set) {
+										$wher2=''; $kymtch=0;
+										$or_terms=preg_split('/\|/',$or_set);
+										foreach ($or_terms as $or_term){
+											$wher2.=" OR `$or_term`"." LIKE '".$pct0.$_POST[$asurro].$pct."'";
+											if($or_term==$key){$kymtch=1;};
+										};
+										if($kymtch==1){$wher3=$wher2;};
+									};
+									if($wher3>''){
+										$wher.='('.substr($wher3,4).')';
+									}else{
+										$wher.="`".$key."`"." LIKE '".$pct0.$_POST[$asurro].$pct."'";
+									};
+								}else{
+									$wher.="`".$key."`"." LIKE '".$pct0.$_POST[$asurro].$pct."'";
+								};
+								$p3=$_POST[$asurro];
 								if($pct=='%'){$p3.='...';};
 								if($pct0=='%'){$p3='...'.$p3;};
-								$criteria.=" and ".$pseudo.' = '.$p3;
+								$criteria.=$and_or.$pseudo.' = '.$p3;
 							}else{
-								$val=$_POST[$surro];
+								$val=$_POST[$asurro];
 								if($fieldType[$key]=='date'){
 									$val=date('Y-m-d',strtotime($val));
 								}else if($fieldType[$key]=='datetime'){
 									$val=date('Y-m-d H:i:s',strtotime($val));
 								};
-								$wher.=" AND ".$key.$oper."'".$val."'";
+								$wher.=strtoupper($and_or);
+// record_progress(__LINE__,$val);
+
+								if(is_array($_POST['_or'])){
+									$wher3='';
+									foreach ($_POST['_or'] as $or_set) {
+										$wher2=''; $kymtch=0;
+										$or_terms=preg_split('/\|/',$or_set);
+										foreach ($or_terms as $or_term){
+											$wher2.=" OR `$or_term`".$oper."'".$val."'";
+											if($or_term==$key){$kymtch=1;};
+										};
+										if($kymtch==1){$wher3=$wher2;};
+									};
+									if($wher3>''){
+										$wher.='('.substr($wher3,4).')';
+									}else{
+										$wher.="`".$key."`".$oper."'".$val."'";
+									};
+								}else{
+
+									$wher.="`".$key."`".$oper."'".$val."'";
+								};
+
 								if($foreignKeyTable[$key]>'' && $foreignKeyColumn[$key]>''){
-									$sqlQ="SELECT `$keyOption` FROM ".$foreignKeyTable[$key]." WHERE `".$foreignKeyColumn[$key]."`='".$_POST[$surro]."'";
-									$sqlForeignOption = mysql_query($sqlQ, $conn)
+									$sqlQ="SELECT `$keyOption` FROM "."`".$foreignKeyTable[$key]."`"." WHERE `".$foreignKeyColumn[$key]."`='".$_POST[$asurro]."'";
+									record_progress(__LINE__,$sqlQ);
+									$sqlForeignOption = mysql_query($sqlQ, $abase_conn)
 										or die("Couldn't perform query (".__LINE__."): ".$sqlQ . mysql_error() . '.');
 									$sqlFKey = mysql_fetch_assoc($sqlForeignOption);
 									$opernd=$sqlFKey[$keyOption];
 								}else{
-									$opernd=$_POST[$surro];
+									$opernd=$_POST[$asurro];
 								};
-								$criteria.=" and ".$pseudo.$oper.$opernd;
+								$criteria.=$and_or.$pseudo.$oper.$opernd;
 							};
 						}else if($_POST[$key_]>'' && $constant==1){
-							$wher.=" AND ".$key.$oper."'".$surro."'";
-							$criteria.=" and ".$pseudo.$oper."'".$surro."'";
+							$wher.=strtoupper($and_or);
+							if(is_array($_POST['_or'])){
+								$wher3='';
+								foreach ($_POST['_or'] as $or_set) {
+									$wher2=''; $kymtch=0;
+									$or_terms=preg_split('/\|/',$or_set);
+									foreach ($or_terms as $or_term){
+										$wher2.=" OR `$or_term`".$oper."'".$surro."'";
+										if($or_term==$key){$kymtch=1;};
+									};
+									if($kymtch==1){$wher3=$wher2;};
+								};
+								if($wher3>''){
+									$wher.='('.substr($wher3,4).')';
+								}else{
+									$wher.="`".$key."`".$oper."'".$surro."'";
+								};
+							}else{
+
+								$wher.="`".$key."`".$oper."'".$surro."'";
+							};
+
+							$criteria.=$and_or.$pseudo.$oper."'".$surro."'";
 						};
 					};
 				};
@@ -943,6 +1147,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			if($order>''){$sqlQuery.=" ORDER BY $order";};
 			if($limit>='0'){$sqlQuery.=" LIMIT $limit";};
 		};
+//		if($progress_log==1){error_log("\nFrom: ".$_SERVER['REMOTE_ADDR'].", At $date, Line:".__LINE__."\n".$sqlQuery."\n", 3, "abase_progress.txt");};
+		record_progress(__LINE__,$sqlQuery);
 
 	}else if($concatenated_values>'' && $concatenated_values_except_db==''){
 		$table_error=1;
@@ -983,7 +1189,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			if($lost_table_error){$top_output.=substr($lost_table_error,0,strlen($lost_table_error)-4);};
 		};
 		$top_output.='</font>';
-		
+		record_progress(__LINE__,'end');
 		return $top_output;
 	};
 
@@ -1030,6 +1236,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	};
 	$ntt=$top_output;
 	$temp=" table_error = '$table_error' cols_in = '$cols_in' fields_in = '$fields_in' columns_in = '$columns_in'  form = '$form' ";
+	
 	if($table_error=='' && ($cols_in>'' || $fields_in>'' || $columns_in>'' || $form>'')){
 
 		$updateMsg='';
@@ -1053,7 +1260,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 
 //SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = $sqlDatabase AND TABLE_NAME = $table
 			$sqlGetAI="SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$sqlDatabase' AND TABLE_NAME = '$table'";
-			$sqlGetAIresult = mysql_query($sqlGetAI, $conn)
+			record_progress(__LINE__,$sqlGetAI);
+			$sqlGetAIresult = mysql_query($sqlGetAI, $abase_conn)
 				or die("Couldn't perform query (".__LINE__."): $sqlGetAI - " . mysql_error() . '.');
 			$sqlGetAIr = mysql_fetch_assoc($sqlGetAIresult);
 			$nextId=$sqlGetAIr['AUTO_INCREMENT'];
@@ -1062,7 +1270,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 
 			for($j=0;$j<count($cols);$j+=1){
 
-				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
+				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);$asurro='*'.$surro;
 				$key_=$key.'_';
 				if($key>''){
 					if($pseudo==''){$pseudo=$key;};
@@ -1126,24 +1334,33 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 				if($no_update==1){
 					$top_output .= $sqlUpdateQuery."<BR>";
 				}else{
-					$sqlUpdateResult = mysql_query($sqlUpdateQuery, $conn)
-						or die("Couldn't perform (".__LINE__.") $sqlUpdateQuery $update_in $elements_in " . mysql_error() . '.');
-					$sqlConfirm="SELECT `$idField` FROM $table $wh ORDER BY `$idField` DESC LIMIT 1";
-					$sqlResultConfirm = mysql_query($sqlConfirm, $conn)
-						or die("Couldn't perform query (".__LINE__."): $sqlConfirm - " . mysql_error() . '.');
-					$num_rows = mysql_num_rows($sqlResultConfirm);
-					$sqlID = mysql_fetch_assoc($sqlResultConfirm);
-
 					$updateMsg=substr($updateString,1);
 					if($ack_color>''){
 						if($ack_color==strtoupper($ack_color)){$updateMsg="<strong>$updateMsg</strong>";};
 						$updateMsg='<font color="'.$ack_color.'">'.$updateMsg.'</font>';
 					};
-
-					if(strlen($ack_url)>0){
-						$updateMsg='<a href="'.$ack_url.'?'.$idField."=".$sqlID[$idField].'">'.$updateMsg.'</a> added.';
-					}else if(strlen($ack)==1){
-						$updateMsg=$updateMsg." added.";
+					$verify_form=verify_form();	//	return 1 for VALID. return -2 for expired. return 0 for doesn't exist. return -1 for minimum time not yet reached.
+					if($verify_form==1){
+						record_progress(__LINE__,$sqlUpdateQuery);
+						$sqlUpdateResult = mysql_query($sqlUpdateQuery, $abase_conn)
+							or die("Couldn't perform (".__LINE__.") $sqlUpdateQuery $update_in $elements_in " . mysql_error() . '.');
+						$sqlConfirm="SELECT `$idField` FROM $table $wh ORDER BY `$idField` DESC LIMIT 1";
+						record_progress(__LINE__,$sqlConfirm);
+						$sqlResultConfirm = mysql_query($sqlConfirm, $abase_conn)
+							or die("Couldn't perform query (".__LINE__."): $sqlConfirm - " . mysql_error() . '.');
+						$num_rows = mysql_num_rows($sqlResultConfirm);
+						$sqlID = mysql_fetch_assoc($sqlResultConfirm);
+						if(strlen($ack_url)>0){
+							$updateMsg='<a href="'.$ack_url.'?'.$idField."=".$sqlID[$idField].'">'.$updateMsg.'</a> added.';
+						}else if(strlen($ack)==1){
+							$updateMsg=$updateMsg." added.";
+						};
+					}else if($verify_form==-2){
+						$updateMsg=$updateMsg." - not added. Form submitted too late. Time expired ($verify_form).";
+					}else if($verify_form==-1){
+						$updateMsg=$updateMsg." - not added. Form submtted too soon. Submit again ($verify_form).";
+					}else{
+						$updateMsg=$updateMsg." - not added. Form not valid ($verify_form).";
 					};
 				};
 			};
@@ -1154,7 +1371,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$mysql_msg="Check to make sure the upper and lower case spelling of your table and column names are all exactly correct. Valid table names in <I>$sqlDatabase</I>: $database_tables.";
 			$mysql_msg.="<BR><BR>$sqlQuery";
 		};
-		$sqlResult = mysql_query($sqlQuery, $conn)
+		record_progress(__LINE__,$sqlQuery);
+		$sqlResult = mysql_query($sqlQuery, $abase_conn)
 			or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes'].$lost_table_error."<B>Fatal Error</B> (".__LINE__.")</font><BR><font style='background-color: white;'>" . mysql_error() . "</font><BR><font style='color: $error_color; background-color: white;'>$mysql_msg  $temp</font>");
 		$num_rows=0;
 // $top_output.="\n\n<!-- HERE 11/11/2013 $num_rows  $form  ".$_POST['_delete']." - $sqlResult -->\n\n";
@@ -1174,7 +1392,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 						$sqlDelete.=" AND `$password_in`='$password_value'";
 					};
 					$sqlDelete.=" LIMIT 1";
-					$sqlDeleteConfirm = mysql_query($sqlDelete, $conn)
+					record_progress(__LINE__,$sqlDelete);
+					$sqlDeleteConfirm = mysql_query($sqlDelete, $abase_conn)
 						or die("Couldn't perform query (".__LINE__."): $sqlDelete - " . mysql_error() . '.');
 					if(mysql_affected_rows()){
 						$delete_took_place=1;
@@ -1218,7 +1437,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$sqlRow = mysql_fetch_assoc($sqlResult);
 			for($j=0;$j<count($cols);$j+=1){
 
-				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
+				list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);$asurro='*'.$surro;
 				if($pseudo==''){$pseudo=$key;};
 //				$top_output.="\n\n<!--- KEY = $key  - ".$_POST[$key_]." --->\n\n";
 //				$top_output.="\n\n<!--- password_in = $password_in  --->\n\n";
@@ -1297,16 +1516,17 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					$top_output .= $sqlUpdateQuery."<BR>";
 				}else{
 //					$top_output.="\n\n<!--- form $form_name: $sqlUpdateQuery --->\n\n";
-
-					$sqlUpdateResult = mysql_query($sqlUpdateQuery, $conn)
+					record_progress(__LINE__,$sqlUpdateQuery);
+					$sqlUpdateResult = mysql_query($sqlUpdateQuery, $abase_conn)
 						or die("Couldn't perform UPDATE (".__LINE__."): $sqlUpdateQuery " . mysql_error() . '.');
-					$sqlResultConfirm = mysql_query("SELECT * FROM $table WHERE $idField='".$sqlRow[$idField]."'", $conn)
+					record_progress(__LINE__,"SELECT * FROM $table WHERE `$idField`='".$sqlRow[$idField]."'");
+					$sqlResultConfirm = mysql_query("SELECT * FROM $table WHERE `$idField`='".$sqlRow[$idField]."'", $abase_conn)
 						or die("Couldn't perform query (".__LINE__."): $sqlQuery - " . mysql_error() . '.');
 					$num_rows = mysql_num_rows($sqlResultConfirm);
 					$sqlRowUpdate = mysql_fetch_assoc($sqlResultConfirm);
 
 					for($j=0;$j<count($cols);$j+=1){
-						list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
+						list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);$asurro='*'.$surro;
 						$key_=$key.'_';
 						if($pseudo==''){$pseudo=$key;};
 
@@ -1385,7 +1605,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					};
 				};
 			};
-			$sqlResult = mysql_query($sqlQuery, $conn)
+			record_progress(__LINE__,$sqlQuery);
+			$sqlResult = mysql_query($sqlQuery, $abase_conn)
 				or die("Couldn't perform query (".__LINE__."): $sqlQuery - " . mysql_error() . '.');
 			$num_rows = mysql_num_rows($sqlResult);
 		};
@@ -1497,7 +1718,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 						if($sqlRow){
 							foreach ($sqlRow as $key=>$col){$col_columns_in.=','.$key;};
 							$col_columns_in=substr($col_columns_in,2);
-							$sqlResult = mysql_query($sqlQuery, $conn)
+							record_progress(__LINE__,$sqlQuery);
+							$sqlResult = mysql_query($sqlQuery, $abase_conn)
 								or die("Couldn't perform query (".__LINE__."): $sqlQuery - " . mysql_error() . '.');
 						};
 					};
@@ -1511,7 +1733,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					$sqlRow = mysql_fetch_assoc($sqlResult);
 					foreach ($sqlRow as $key=>$col){$fields_in.=','.$key;};
 					$fields_in=substr($fields_in,2);
-					$sqlResult = mysql_query($sqlQuery, $conn)
+					record_progress(__LINE__,$sqlQuery);
+					$sqlResult = mysql_query($sqlQuery, $abase_conn)
 						or die("Couldn't perform query (".__LINE__."): $sqlQuery - " . mysql_error() . '.');
 //					$output .="<BR><BR>$fields_in<br><BR>";
 				};
@@ -1597,7 +1820,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					};
 // ROW COLUMN LOOP STARTS HERE
 					for($j=0;$j<count($cols);$j+=1){
-						list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);
+						list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);$asurro='*'.$surro;
 						$pseudo_original=$pseudo;
 						if($pseudo==''){$pseudo=$key;};
 						if($key>''){
@@ -1661,9 +1884,10 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 							if(strpos(' '.$update,$commaedKey) || strpos(' '.$search,$commaedKey) || strpos(' '.$insert,$commaedKey)){
 								if($foreignKeyTable[$key]>'' && $foreignKeyColumn[$key]>''){
 									if($keyOption==''){
-										$sqlFTQry="SHOW COLUMNS FROM ".$foreignKeyTable[$key];
+										$sqlFTQry="SHOW COLUMNS FROM `".$foreignKeyTable[$key]."`";
 										$strng='';
-										$sqlFTColumns = mysql_query($sqlFTQry, $conn)
+										record_progress(__LINE__,$sqlFTQry);
+										$sqlFTColumns = mysql_query($sqlFTQry, $abase_conn)
 											or die("Couldn't perform query (".__LINE__."): $sqlFTQry - $foreignKeyColumn[$key] - " . mysql_error() . '.');
 										while($sqlFTCol = mysql_fetch_assoc($sqlFTColumns)){
 											$strng.=$sqlFTCol['Field'].',';
@@ -1675,9 +1899,10 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 									if(strpos($opt_val,'.')){
 										$opt_val=substr($opt_val,strpos($opt_val,'.')+1);
 									};
-									$sqlQry="SELECT `$foreignKeyColumn[$key]`,`$opt_val` FROM ".$foreignKeyTable[$key]." ORDER BY ".$opt_val;
-									$sqlKeys = mysql_query($sqlQry, $conn)
-										or die("Couldn't perform query (".__LINE__."): $sqlQry - $foreignKeyColumn[$key] - $strng - " . mysql_error() . '.');
+									$sqlQry="SELECT `$foreignKeyColumn[$key]`,`$opt_val` FROM `".$foreignKeyTable[$key]."` ORDER BY `".$opt_val."`";
+									record_progress(__LINE__,$sqlQry);
+									$sqlKeys = mysql_query($sqlQry, $abase_conn)
+										or die("Couldn't perform query (".__LINE__."): $sqlQry -- $foreignKeyColumn[$key] -- $strng -- " . mysql_error() . '.');
 									while($sqlKey = mysql_fetch_assoc($sqlKeys)){
 										$optionList.="<option value='".$sqlKey[$foreignKeyColumn[$key]]."'";
 										if(strpos(' '.$update,$commaedKey) && $sqlRowKey==$sqlKey[$foreignKeyColumn[$key]]){$optionList.=" SELECTED";};
@@ -1851,12 +2076,12 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 									$abase_row .='<input type=checkbox name="'.$key.'_" value="'.$surro.'" style="vertical-align:-3px;">'.$surro;
 									$ntt .='<input type=checkbox name="'.$key.'_" value="'.$surro.'" style="vertical-align:-3px;">'.$surro;
 								}else if($optionList>''){
-									$abase_row .="<select name='".$surro."' $input_style><option value=''>".$optionList."</select>";
-									$ntt .="<select name='".$surro."' $input_style><option value=''>".$optionList."</select>";
+									$abase_row .="<select name='".$asurro."' $input_style><option value=''>".$optionList."</select>";
+									$ntt .="<select name='".$asurro."' $input_style><option value=''>".$optionList."</select>";
 								}else if($ftype=='date'){
 									if($input_style==''){$input_style=" size='10' ";};
-									$abase_row .="<input name='".$surro."' type=text $input_style";
-									$ntt .="<input name='".$surro."' type=text $input_style";
+									$abase_row .="<input name='".$asurro."' type=text $input_style";
+									$ntt .="<input name='".$asurro."' type=text $input_style";
 
 					//				$demolo_row.=" placeholder=".'"e.g., ';
 					//				if(strpos(' '.$op,'>')){
@@ -1869,20 +2094,34 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 									$abase_row.=">";
 									$ntt.=">";
 								}else if($fsize==1 && $ftype=='int'){
-									$abase_row .="<input type=checkbox name='".$surro."' value=1>";
-									$ntt .="<input type=checkbox name='".$surro."' value=1>";
+									$abase_row .="<input type=checkbox name='".$asurro."' value=1>";
+									$ntt .="<input type=checkbox name='".$asurro."' value=1>";
 								}else if($fsize<20){
 									$numRows=intval($fsize/60);
 									if($input_style==''){$input_style=" size='$numRows' ";};
-									$abase_row .="<input name='".$surro."' type=text $input_style value=".'"'.'"'.">";
-									$ntt .="<input name='".$surro."' type=text $input_style value=".'"'.'"'.">";
+									$abase_row .="<input name='".$asurro."' type=text $input_style value=".'"'.'"'.">";
+									$ntt .="<input name='".$asurro."' type=text $input_style value=".'"'.'"'.">";
 								}else{
 									if($input_style==''){$input_style=" size='20' ";};
-									$abase_row .="<input name='".$surro."' type=text $input_style value=".'"'.'"'.">";
-									$ntt .="<input name='".$surro."' type=text $input_style value=".'"'.'"'.">";
+									$abase_row .="<input name='".$asurro."' type=text $input_style value=".'"'.'"'.">";
+									$ntt .="<input name='".$asurro."' type=text $input_style value=".'"'.'"'.">";
 								};
 								$abase_row .='<input name="_term[]" type=hidden value="'.$pseudo.','.$key.','.$keyOption.','.$submit.','.$op.','.$surro.','.$pct.','.$pct0.','.$constant.'">';
 								$ntt .='<input name="_term[]" type=hidden value="'.$pseudo.','.$key.','.$keyOption.','.$submit.','.$op.','.$surro.','.$pct.','.$pct0.','.$constant.'">';
+								if($or_in>''){
+									$or_sets=preg_split('/\,/',$or_in);
+									foreach ($or_sets as $or_set){
+										$or_terms=preg_split('/\|/',$or_set);
+										$kymtch=0;
+										foreach ($or_terms as $or_term){
+											if($or_term==$key){$kymtch=1;};
+										};
+										if($kymtch==1){
+											$abase_row .='<input name="_or[]" type=hidden value="'.$or_set.'">';
+											$ntt .='<input name="_or[]" type=hidden value="'.$or_set.'">';
+										};
+									};
+								};
 								if(0 && $submit>''){
 									$abase_row .="&nbsp; &nbsp; <input type=submit value='".$submit."'>";
 								};
@@ -1955,6 +2194,11 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 
 		$outputx='';
 		if($form%10==1 || $form%10==3 || $form==4){
+			if($form_type=='delete' || $form_type=='insert' || $form_type=='update'){
+				$submitip=time().':'.$remote_addr;
+				add_valid_form($submitip);
+				$outputx .="<input type='hidden' name='_submit' value='$submitip'>";
+			};
 			$outputx .="</FORM>";
 			$outputx .="<script language='JavaScript'>";
 			$outputx.="function bus311mtd_".$ranstr."check_entries(){";
@@ -2016,6 +2260,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			send_email($emailto,$emailsubject,$ntt,$emailfrom,$emailcc,$emailbcc);
 			$ntt='';
 		};
+		record_progress(__LINE__,'end');
+		reopen_wpdb();
 		return $ntt;
 	}else{
 		$outputx=trim(strip_tags($output));
@@ -2029,8 +2275,23 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			send_email($emailto,$emailsubject,$output,$emailfrom,$emailcc,$emailbcc);
 			$output='';
 		};
+		record_progress(__LINE__,'end');
+		reopen_wpdb();
 		return $top_output.$output;
 	};
-
+	record_progress(__LINE__,'end');
 };
+	
+function reopen_wpdb(){
+//	mysql_close($abase_conn);
+	$sqlWpHost=DB_HOST;
+	$sqlWpDatabase=DB_NAME;
+	$sqlWpPass=DB_PASSWORD;
+	$sqlWpUser=DB_USER;
+	$wp_conn = mysql_connect($sqlWpHost, $sqlWpUser, $sqlWpPass) 
+		or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes']."<B>Fatal Error</B>  (".__LINE__.") - Couldn't reconnect to host '$sqlWpHost'.<BR>" . mysql_error());
+	$wp_db = mysql_select_db($sqlWpDatabase, $wp_conn)
+		or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes']."<B>Fatal Error</B>  (".__LINE__.") - Couldn't reselect database '$sqlWpDatabase'.<BR>" . mysql_error());
+};
+
 ?>
