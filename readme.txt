@@ -81,7 +81,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>notable</strong> - notable="1" will cause the table in a cols="" or columns="" specification to display without the beginning (&lt;table&gt;) or ending table tag (&lt;/table&gt;).
 	<li><strong>notitle</strong> - notitle="1" will cause the table in a cols="" or columns="" specification to display without the column titles.
 	<li><strong>or</strong> - or=" &lt;column_set&gt; ( , &lt;column_set&gt; )" specifies sets of columns in a search form that are compated to the same operand in the WHERE clause.
-		<ul><li>&lt;column_set&gt; ::=  &lt;column&gt; ( | &lt;column&gt; )
+		<ul><li>&lt;column_set&gt; ::=  &lt;column&gt; ( | &lt;column&gt; )</ul>
 	<li><strong>order</strong> - Specifies the ORDER BY clause.
 	<li><strong>password</strong> - password="" specify password field. Password entry and match is required to update or delete table record.
 	<li><strong>required</strong> - required=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns in an insert or update form that must have a filled in value or the submit will not be accepted. An error alert message will appear.
