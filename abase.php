@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.2.1
+Version: 2.3
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -1127,7 +1127,13 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					};
 				};
 
-				if($wher>'' && $where==''){$where=substr($wher,5);};
+				if($wher>''){
+					if($where==''){
+						$where=substr($wher,5);
+					}else if(substr(strtolower(trim($where)),0,4)=='and ' OR substr(strtolower(trim($where)),0,3)=='or '){
+						$where='('.substr($wher,5).') '.$where;
+					};
+				};
 				$criteria=substr($criteria,5);
 			};
 		};
@@ -1135,7 +1141,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 		if($qwhere>''){
 			if($where>''){$where='('.$where.') '.$qwhere;}else{$where=substr($qwhere,4);};
 		};
-
+		if(substr(strtolower(trim($where)),0,4)=='and ' OR substr(strtolower(trim($where)),0,3)=='or '){$where=trim(substr($where,3));};
 
 		$sqlQueryB4Where=$sqlQuery;
 		if($search_in>''){
@@ -1221,7 +1227,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	}else if($echo_in=='99'){
 		$top_output.="<font style='color:$error_color; background-color: white;'>";
 		if($error_string>''){$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.'SHORTCODE ERROR: '.substr($error_string,2).'<BR>';};
-		$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.htmlspecialchars($short_code);
+		$top_output.='&lt;!-- #'.$GLOBALS['bus311mtd_instance'].' --&gt;';
+		$top_output.=htmlspecialchars($short_code);
 		if($pval<2 && ($db_in=='2' || $db_in=='3')){$top_output.='<sup> ('.$db_in.')</sup>';};
 		$top_output.="<BR>".$sqlQuery.$debug_string;
 		$top_output.="<BR>";
@@ -1229,7 +1236,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 //		$top_output.='<font color="'.$echo_in.'">';
 		$top_output.="<font style='color:$echo_in; background-color: white;'>";
 		if($error_string>''){$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.'SHORTCODE ERROR: '.substr($error_string,2).'<BR>';};
-		$top_output.='#'.$GLOBALS['bus311mtd_instance'].'. '.htmlspecialchars($short_code);
+		$top_output.='&lt;!-- #'.$GLOBALS['bus311mtd_instance'].' --&gt;';
+		$top_output.=htmlspecialchars($short_code);
 		if($pval<2 && ($db_in=='2' || $db_in=='3')){$top_output.='<sup> ('.$db_in.')</sup>';};
 		$top_output.='</font>';
 		$top_output.="<BR>";
