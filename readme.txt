@@ -3,7 +3,7 @@ Contributors: richhalverson
 Donate link: http://abase.com
 Tags: abase, sql, query, shortcode, mysql, database, email
 Requires at least: 3.3
-Tested up to: 3.9.1
+Tested up to: 4.1.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,11 +19,11 @@ The ABASE shortcode with a list of all the optional attributes is shown next. Ea
 <P>
 [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
 <P>
-Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <B>sql</B>, <B>from</B>, or <B>table</B> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <B>emailto</B> attribute. The attribute names must be lower case.
+Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <strong>sql</strong>, <strong>from</strong>, or <strong>table</strong> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <strong>emailto</strong> attribute. The attribute names must be lower case. Characters <code>&lt;</code> and <code>&gt;</code> are illegal within the quotes. The <code>&lt</code> must be replaced with <code>&amp;lt;</code> and <code>&gt;</code> must be replaced with <code>&amp;gt;</code>.
 <P>
 ABASE shortcodes can also be of the form [abase ...]&lt;content&gt;[/abase]. In this form, &lt;content&gt; will be displayed above what [abase ...] produces. The shortcode name "abase" can be all lower-case or all upper-case but not mixed case. Each functions identically but are treated separately. Note that when including a closing shortcode, it must be case identical. &lt;content&gt; can include ABASE tags as long as the alternate case is used. Embedding shortcodes in content is useful when using ABASE to send emails from your website.
 <h3>Databases</h3>
-ABASE can connect to up to 3 databases, numbered 1, 2 and 3. (In <nobr>Settings->ABASE for MySQL.</nobr> Expand to full settings.) ABASE shortcodes default to using database 1. A db="1", db="2" or db="3" attribute in a shortcode will change the default database for this and the remaining shortcodes on the page. Therefore if the page uses database 2, you only need to specify [abase db="2"] in the first shortcode, then not specify a <B>db</B> attribute in any of the remaining shortcodes on that page.
+ABASE can connect to up to 3 databases, numbered 1, 2 and 3. (In <nobr>Settings->ABASE for MySQL.</nobr> Expand to full settings.) ABASE shortcodes default to using database 1. A db="1", db="2" or db="3" attribute in a shortcode will change the default database for this and the remaining shortcodes on the page. Therefore if the page uses database 2, you only need to specify [abase db="2"] in the first shortcode, then not specify a <strong>db</strong> attribute in any of the remaining shortcodes on that page.
 <P>
 In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode [abase2] will use the database 2 regardless of the default, and will not change the default. Shortcode [abase3] will use database 3 and not change the default.
 <h3>Attributes</h3>
@@ -33,8 +33,8 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>alink</strong> - alink=" &lt;column&gt; ( , &lt;url&gt; ( , &lt;append&gt;  ( , &lt;target&gt; ) ) )"
 		<ul><li>&lt;column&gt; - column name whose content will become a link to a &lt;url&gt; that is appended with the contents of column &lt;append&gt;.<li>&lt;target&gt; specifies the target window for the link (e.g., target="_blank" will open a new browser window.</ul>
 	<li><strong>center</strong> - center=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more table columns to center when displaying. Note: <strong>center="*"</strong> indicates all columns.
-	<li><strong>cols</strong> - cols=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed as a table. Two or more records to be displayed are required. Designed to be used in conjunction with fields specification. See &lt;field_spec&gt; below under <B>fields</B>. Note: <strong>cols="*"</strong> indicates all columns.
-	<li><strong>columns</strong> - columns=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the columns to be displayed in a table. Zero or more records will be displayed. See &lt;field_spec&gt; below under <B>fields</B>. Note: <strong>columns="*"</strong> indicates all columns.
+	<li><strong>cols</strong> - cols=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed as a table. Two or more records to be displayed are required. Designed to be used in conjunction with fields specification. See &lt;field_spec&gt; below under <strong>fields</strong>. Note: <strong>cols="*"</strong> indicates all columns.
+	<li><strong>columns</strong> - columns=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the columns to be displayed in a table. Zero or more records will be displayed. See &lt;field_spec&gt; below under <strong>fields</strong>. Note: <strong>columns="*"</strong> indicates all columns.
 	<li><strong>database</strong> - database="" Override default database specified in Settings. Sticky. (Specify once on page and override applies to remaining short codes until new db="" specification.)
 	<li><strong>db</strong> - db="" Change default database. Choose database 1, 2  or 3 as specified in Settings.  Sticky. (Specify once on page and override applies to remaining short codes.)
 	<li><strong>echo</strong> - echo="&lt;color&gt;" will display (i.e., echo) the shortcode in the specified HTML &lt;color&gt; (e.g., echo="red").
@@ -47,7 +47,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>emailto</strong> - emailto="" specify email recipient. Either a specific email address or a column name that contains an email address. Only one email can be sent per shortcode execution.
 	<li><strong>fields</strong> - fields=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed in record view. Record view is a two column table with the field names in the first column and the values in the second column.
 		<ul><li>Meta language: terms in parentheses are optional, vertical bar (|) - OR operator. (Exception - vertical bar (|) preceded &lt;foreign_column&gt;.)
-			<li>&lt;field_spec&gt; ::= ( &lt;column_title&gt;^ ) &lt;column_name&gt; ( |&lt;foreign_column&gt; ) ( ! ( '( &lt;element_type&gt; &lt;space&gt; ) &lt;element_style&gt;' ) ) ( [&gt;|&gt;=|=|&lt;=|&lt;|!=] ( % ) &lt;operand&gt; ) ( % ) ( $ ( &lt;button_value&gt; ) )
+			<li>&lt;field_spec&gt; ::= ( &lt;column_title&gt;^ ) &lt;column_name&gt; ( |&lt;foreign_column&gt; ) ( ! ( '( &lt;element_type&gt; &lt;space&gt; ) &lt;element_style&gt;' ) ) ( [&gt;|&gt;=|=|&lt;=|&lt;|!=] ( % ) &lt;operand&gt; ) ( % ) ( $ ( &lt;button_value&gt; ) ) &nbsp; &nbsp; <strong>Note:</strong> characters <code>&lt;</code> and <code>&gt;</code> are illegal for less-than or greater-than in an expression, so replace <code>&lt</code> with <code>&amp;lt;</code> and <code>&gt;</code> with <code>&amp;gt;</code>.
 			<li>&lt;operand&gt; ::= &lt;surrogate&gt; | &lt;integer&gt; | ' &lt;constant&gt; '
 			<li>&lt;column_title&gt; = optionally precedes &lt;column_name&gt; using a carrot (^) character. It replaces &lt;column_name&gt; as column title in table view and field name in record view.
 			<li>&lt;column_name&gt; = name of a column returned from the SELECT
@@ -60,7 +60,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 			<li>&lt;integer&gt; = digits consisting of 0-9.
 			<li>&lt;space&gt; = blank space.
 		</ul> Note: <strong>fields"*"</strong> indicates all fields.
-	<li><strong>files</strong> - files=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns that will contain URLs of uploaded files. The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <B>files</B> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. A <B>files</B> column field type should be varchar(255).
+	<li><strong>files</strong> - files=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns that will contain URLs of uploaded files. The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <strong>files</strong> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. A <strong>files</strong> column field type should be varchar(255).
 	<li><strong>form</strong> - form="( &lt;form_type&gt; , ) &lt;tag_code&gt; ( , &lt;form_action&gt; )"  Beginning and/or end of HTML form.
 		<ul>
 			<li>tag_code="1" specifies this shortcode as an entire form. A &lt;form ...&gt; tag will appear at the beginning and a &lt;/form&gt; tag will appear at the end. 
@@ -74,17 +74,17 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 		</ul>
 	<li><strong>from</strong> - Specifies the table_references clause in the MySQL SELECT statement. Default is table specified.
 	<li><strong>group</strong> - Specifies the GROUP BY clause and can include a HAVING part.
-	<li><strong>images</strong> - images=" &lt;column_spec&gt; ( , &lt;column_spec&gt; )" specifies one or more columns that will contain URLs of uploaded images. Similar to <B>files</B> except when an <B>images</B> column is displayed, it is displayed as an HTML image tag with the cell content defining the image source.<BR>&lt;column_spec&gt; ::= ( &lt;site_url&gt;^ ) &lt;column_name&gt;, where &lt;site_url&gt; replaces the default site_url in the image "src" field.<BR>The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <B>images</B> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. An <B>images</B> column field type should be varchar(255).
+	<li><strong>images</strong> - images=" &lt;column_spec&gt; ( , &lt;column_spec&gt; )" specifies one or more columns that will contain URLs of uploaded images. Similar to <strong>files</strong> except when an <strong>images</strong> column is displayed, it is displayed as an HTML image tag with the cell content defining the image source.<BR>&lt;column_spec&gt; ::= ( &lt;site_url&gt;^ ) &lt;column_name&gt;, where &lt;site_url&gt; replaces the default site_url in the image "src" field.<BR>The insert and update form elements are file selection boxes with browse buttons. Inserting or updating values in <strong>images</strong> fields involves file uploading to the File Upload Directory (specified in Settings). The uploaded file will be stored in the directory and the directory path and file name will be stored in the database table cell. An <strong>images</strong> column field type should be varchar(255).
 	<li><strong>insert</strong> - insert="" (depreciated. Use form="insert".)
 	<li><strong>left</strong> - left=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns to left justify. Note: <strong>left="*"</strong> indicates all columns.
 	<li><strong>limit</strong> - Specifies a LIMIT clause.
 	<li><strong>notable</strong> - notable="1" will cause the table in a cols="" or columns="" specification to display without the beginning (&lt;table&gt;) or ending table tag (&lt;/table&gt;).
-	<li><strong>notitle</strong> - notitle="1" will cause the table in a cols="" or columns="" specification to display without the column titles.
-	<li><strong>or</strong> - or=" &lt;column_set&gt; ( , &lt;column_set&gt; )" specifies sets of columns in a search form that are compated to the same operand in the WHERE clause.
-		<ul><li>&lt;column_set&gt; ::=  &lt;column&gt; ( | &lt;column&gt; )</ul>
+	<li><strong>notitle</strong> - notitle="1" will cause the table output to display without the column titles. notitle defaults to 1 when the output result contains only one row and one column. notitle="0" will force a column title when the output contains only one row and one column.
+	<li><strong>or</strong> - or=" &lt;field_set&gt; ( , &lt;field_set&gt; )" specifies sets of fields in a search form that are compared to the same operand in the WHERE clause.
+		<ul><li>&lt;field_set&gt; ::=  &lt;field&gt; ( | &lt;field&gt; )</ul>
 	<li><strong>order</strong> - Specifies the ORDER BY clause.
 	<li><strong>password</strong> - password="" specify password field. Password entry and match is required to update or delete table record.
-	<li><strong>required</strong> - required=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns in an insert or update form that must have a filled in value or the submit will not be accepted. An error alert message will appear.
+	<li><strong>required</strong> - required=" &lt;field&gt; ( , &lt;field&gt; )" specifies one or more fields in an insert or update form that must have a filled in value or the submit will not be accepted. An error alert message will appear.
 	<li><strong>right</strong> - right=" &lt;column&gt; ( , &lt;column&gt; )" specifies one or more columns to right justify. Note: <strong>right="*"</strong> indicates all columns.
 	<li><strong>rlink</strong> - rlink=" &lt;column&gt; ( , &lt;url&gt; ( , &lt;target&gt; ) )" Record link. Link which specifies the primary index &lt;name&gt;=&lt;value&gt; pair in query string. Used to display a single record in the database.
 		<ul>
@@ -95,11 +95,11 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>rownum</strong> - rownum="1" will add line numbers to the display tables.
 	<li><strong>search</strong> - search="" (depreciated. Use form="search".)
 	<li><strong>select</strong> - Specifies the select_expr clause in the MySQL SELECT statement. Default is * (all columns).
-	<li><strong>sql</strong> - Specifies a complete MySQL statement to be executed.
+	<li><strong>sql</strong> - Specifies a complete MySQL statement to be executed. Characters <code>&lt;</code> and <code>&gt;</code> are illegal for less-than or greater-than in an expression, so replace <code>&lt</code> with <code>&amp;lt;</code> and <code>&gt;</code> with <code>&amp;gt;</code>.
 	<li><strong>style</strong> - This will specify a style="" attribute for the table that encloses the shortcode display.
 	<li><strong>table</strong> - Specifies the database table to be searched or updated.
 	<li><strong>update</strong> - update="" (depreciated. Use form="update".)
-	<li><strong>where</strong> - Specifies the where_condition clause in the MySQL SELECT statement. If it begins with "AND " or "OR " it will be concatenated to (instead of overridding) any other where expression.
+	<li><strong>where</strong> - Specifies the where_condition clause in the MySQL SELECT statement. If it begins with "AND " or "OR " it will be concatenated to (instead of overridding) any other where expression. Characters <code>&lt;</code> and <code>&gt;</code> are illegal for less-than or greater-than in an expression, so replace <code>&lt</code> with <code>&amp;lt;</code> and <code>&gt;</code> with <code>&amp;gt;</code>.
 </ul>
 <h3>Displaying Fields</h3>
 <ul>
@@ -286,9 +286,13 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.4 =
+
+Added html_entity_decode() to all database related attributes that could contain &lt; or &gt; for less-than or greater-than. Use <code>&amp;lt;</code> for &lt; and <code>&amp;gt;</code> for &gt;. notable="0" forces a column title when the table output is only one row and one column.
+
 = 2.3 =
 
-Modified where="" attribute. Normally if a WHERE clause is produced in the SQL statement for the shortcode, an expression specified by a where="" attribute overrides and take precedence. Now if the where="" expression begins with AND or OR then it will be appended to the end of any WHERE clause generated by the shortcode. If the where="" expression does not begin with an AND or an OR then it behaves as before, overriding a WHERE clause generated when executing the shortcode. Typically it would be used to restrict searches to valid records, e.g., where="AND `valid`='1'".\
+Modified where="" attribute. Normally if a WHERE clause is produced in the SQL statement for the shortcode, an expression specified by a where="" attribute overrides and take precedence. Now if the where="" expression begins with AND or OR then it will be appended to the end of any WHERE clause generated by the shortcode. If the where="" expression does not begin with an AND or an OR then it behaves as before, overriding a WHERE clause generated when executing the shortcode. Typically it would be used to restrict searches to valid records, e.g., where="AND `valid`='1'".
 
 Bug fixes
 
@@ -351,6 +355,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.4 =
+
+Added html_entity_decode() to all database related attributes that could contain &lt; or &gt; for less-than or greater-than. Use <code>&amp;lt;</code> for &lt; and <code>&amp;gt;</code> for &gt;. notable="0" forces a column title when the table output is only one row and one column.
 
 = 2.3 =
 

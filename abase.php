@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.3
+Version: 2.4
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -443,6 +443,9 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$or_in=$incomingfromhandler['or'];
 	$order_in=$incomingfromhandler['order'];
 	$limit_in=$incomingfromhandler['limit'];
+
+
+
 	$notitle_in=$incomingfromhandler['notitle'];
 	$notable_in=$incomingfromhandler['notable'];
 	$style_in=$incomingfromhandler['style'];
@@ -465,19 +468,49 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$search_in=$incomingfromhandler['search'];
 	$form_in=$incomingfromhandler['form'];
 	$insert_in=$incomingfromhandler['insert'];
+	$required_in=$incomingfromhandler['required'];
 	$elements_in=$incomingfromhandler['elements'];
 	$password_in=$incomingfromhandler['password'];
+	$emailorigin=$incomingfromhandler['emailorigin'];
 	$emailto=$incomingfromhandler['emailto'];
 	$emailfrom=$incomingfromhandler['emailfrom'];
 	$emailcc=$incomingfromhandler['emailcc'];
 	$emailbcc=$incomingfromhandler['emailbcc'];
-	$emailorigin=$incomingfromhandler['emailorigin'];
-	$emailto_in=$incomingfromhandler['emailto'];
-	$emailfrom_in=$incomingfromhandler['emailfrom'];
-	$emailcc_in=$incomingfromhandler['emailcc'];
-	$emailbcc_in=$incomingfromhandler['emailbcc'];
 	$emailsubject=$incomingfromhandler['emailsubject'];
-	$required_in=$incomingfromhandler['required'];
+
+	$style_in=html_entity_decode($style_in);
+
+	$emailto=html_entity_decode($emailto);
+	$emailfrom=html_entity_decode($emailfrom);
+	$emailcc=html_entity_decode($emailcc);
+	$emailbcc=html_entity_decode($emailbcc);
+	$emailsubject=html_entity_decode($emailsubject);
+
+	$emailto_in=$emailto;
+	$emailfrom_in=$emailfrom;
+	$emailcc_in=$emailcc;
+	$emailbcc_in=$emailbcc;
+
+	$password_in=html_entity_decode($password_in);
+
+	$sql_in=html_entity_decode($sql_in);
+	$select_in=html_entity_decode($select_in);
+	$table_in=html_entity_decode($table_in);
+	$from_in=html_entity_decode($from_in);
+	$where_in=html_entity_decode($where_in);
+	$group_in=html_entity_decode($group_in);
+
+	$where=$where_in;
+
+	$sql=$sql_in;
+	$select=$select_in;
+	$table=$table_in;
+	$from=$from_in;
+
+	$columns_in=html_entity_decode($columns_in);
+	$fields_in=html_entity_decode($fields_in);
+	$cols_in=html_entity_decode($cols_in);
+
 
 	$short_code='';
 	if($pval==0){
@@ -705,16 +738,6 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	if($form%10==1 || $form%10==2 || $form==4){
 		$GLOBALS['bus311mtd_form_start']=$ranstr;
 	};
-
-	$sql=htmlspecialchars_decode($sql_in);
-	$select=htmlspecialchars_decode($select_in);
-	$table=htmlspecialchars_decode($table_in);
-	$from=htmlspecialchars_decode($from_in);
-	$where=htmlspecialchars_decode($where_in);
-
-	$columns_in=htmlspecialchars_decode($columns_in);
-	$fields_in=htmlspecialchars_decode($fields_in);
-	$cols_in=htmlspecialchars_decode($cols_in);
 
 	$table_error='';
 	if($table>''){
@@ -1828,7 +1851,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 					};
 // ROW COLUMN LOOP STARTS HERE
 					for($j=0;$j<count($cols);$j+=1){
-						list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type)=bus311tabledisplay_field_split($cols[$j]);$asurro='*'.$surro;
+						list($pseudo,$key,$keyOption,$submit,$op,$surro,$pct,$pct0,$constant,$element_style,$value_format,$element_type) = bus311tabledisplay_field_split($cols[$j]);
+						$asurro='*'.$surro;
 						$pseudo_original=$pseudo;
 						if($pseudo==''){$pseudo=$key;};
 						if($key>''){
@@ -2256,7 +2280,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			};
 		};
 	};
-	if($cellCount==1 && ($notitle == '1' || $pseudo_original=='')){
+	if(!($notitle=='0') && $cellCount==1 && ($notitle == '1' || $pseudo_original=='')){
 		$outputx=trim(strip_tags($ntt));
 		$ntt=$sc_content.$ntt;
 //		if(strlen($where.$sql)>0 && $rowLoop<=1 && strlen($ntt)>0 && strpos($emailto,'@')>0 && strpos($emailto,'.',strpos($emailto,'@'))>strpos($emailto,'@')){
