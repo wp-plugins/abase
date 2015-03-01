@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.5
+Version: 2.5.1
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -16,7 +16,7 @@ License: GPLv2. See http://www.gnu.org/licenses/gpl.html
 
 /*
 
-Version 2.5 Added disable wptexturization making using < or > in attribute specifications easier. Database names now default to the user name prefix when only one database setting is displayed. Spaces around commas in attributes now allowed. PHP files are no longer uploadable.
+Version 2.5.1 Added disable wptexturization making using < or > in attribute specifications easier. Database names now default to the user name prefix when only one database setting is displayed. Spaces around commas in attributes now allowed. PHP files are no longer uploadable. Added wptexturize suggestion in error message.
 
 */
 
@@ -1243,7 +1243,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 //		$top_output.='<STRONG>#'.$GLOBALS['bus311mtd_instance'].'.</STRONG> '.$full_short_code;
 		$top_output.='<STRONG>#'.$GLOBALS['bus311mtd_instance'].'.</STRONG> '.htmlspecialchars($full_short_code);
 		$top_output.="<br><STRONG>Non-Fatal Error</STRONG> (".__LINE__.")<br>".substr($error_string,2);
-		if(strpos($full_short_code,'&#8221;')>0 && !get_option('bus311mtd_disable_wptexturize')){
+		if(strpos($full_short_code,'#8221;')>0 && !get_option('bus311mtd_disable_wptexturize')){
 			$top_output.="<BR>You might try disabling <I>wptexturize</I> under Settings.";
 		};
 		$top_output.='</font>';
@@ -1422,8 +1422,13 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 			$mysql_msg.="<BR><BR>$sqlQuery";
 		};
 		record_progress(__LINE__,$sqlQuery);
+		$wptexturize_warning='';
+		if(strpos($GLOBALS['bus311mtd_page_shortcodes'],'#8221;')>0 && !get_option('bus311mtd_disable_wptexturize')){
+			$wptexturize_warning="<BR>You might try disabling <I>wptexturize</I> under Settings.";
+		};
+
 		$sqlResult = mysql_query($sqlQuery, $abase_conn)
-			or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes'].$lost_table_error."<B>Fatal Error</B> (".__LINE__.")</font><BR><font style='background-color: white;'>" . mysql_error() . "</font><BR><font style='color: $error_color; background-color: white;'>$mysql_msg  $temp</font>");
+			or die("<font style='color: $error_color; background-color: white;'>".$GLOBALS['bus311mtd_page_shortcodes'].$lost_table_error."<B>Fatal Error</B> (".__LINE__.")</font><BR><font style='background-color: white;'>" . mysql_error() . "</font><BR><font style='color: $error_color; background-color: white;'>$mysql_msg  $temp $wptexturize_warning</font>");
 		$num_rows=0;
 // $top_output.="\n\n<!-- HERE 11/11/2013 $num_rows  $form  ".$_POST['_delete']." - $sqlResult -->\n\n";
 		if($sqlResult && $sqlResult != '1'){
