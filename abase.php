@@ -3,7 +3,7 @@
 Plugin Name: ABASE for Accessing MySQL Databases
 Plugin URI: http://abase.com/
 Description: Create a form, display a table or send an email. Short code: [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]. To setup up to 3 databases and for complete attribute documentation, click Settings link at left.
-Version: 2.4
+Version: 2.5
 Author: Richard Halverson
 Author URI: http://abase.com/
 License: GPLv2. See http://www.gnu.org/licenses/gpl.html
@@ -13,6 +13,14 @@ License: GPLv2. See http://www.gnu.org/licenses/gpl.html
 
 // require 'plugin-updates/plugin-update-checker.php';
 // $MyUpdateChecker = new PluginUpdateChecker('http://abase.com/plugins/abase.json',__FILE__,'abase');
+
+/*
+
+Version 2.5 Added disable wptexturization making using < or > in attribute specifications easier. Database names now default to the user name prefix when only one database setting is displayed. Spaces around commas in attributes now allowed. PHP files are no longer uploadable.
+
+*/
+
+if(get_option('bus311mtd_disable_wptexturize')) remove_filter('the_content', 'wptexturize');
 
 add_action( 'admin_menu', 'table_display_plugin_menu' );
 
@@ -204,6 +212,7 @@ function bus311tabledisplay_field_split($key_in){
 //	<field_spec> ::= ( <column_title>^ ) <column_name> ( |<foreign_column> ) ( @'<value_format>' ) ( !'<element_style>' ) ( [>|>=|=|<=|<|!=] ( % ) <operand> ) ( % ) ( $ ( <button_value> ) )
 //	special characters: ^ | $ > >= = <= < != %
 //	<operand> ::= <surrogate> | <integer> | ' <constant> '
+	$key_in=trim($key_in);
 	$wkey=htmlspecialchars_decode($key_in);
 	$column_title=''; $column_name=''; $foreign_column=''; $submit_button=''; $button_value=''; $op=''; $operand=''; $got_pct=''; $got_pct0=''; $operand_is_constant=0; $element_style=''; $value_format=''; $delete_value='';$element_type='';
 	$input_types=array();
@@ -350,6 +359,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	$debug_string='';
 	$error_string='';
 	$fatal_error=0;
+	$rejectFiles='/\.(sh|asp|cgi|php|php3|ph3|php4|ph4|php5|ph5|phtm|phtml)$/';
 	$maxJoinCount=20;
 	$maxJoinDepth=20;
 	$error_color="#800517";
@@ -668,6 +678,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	if($form_in>''){
 		$frms=split(',',$form_in);
 		foreach($frms as $fm){
+			$fm=trim($fm);
 			$debug_string.=" ,fm=$fm";
 			if(is_numeric($fm)){
 				$form=$fm;
@@ -793,6 +804,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 	if($updateack_in>''){
 		$acks=split(',',$updateack_in);
 		foreach($acks as $ak){
+			$ak=trim($ak);
 			$debug_string.=" ,ak=$ak";
 			if($ak>='1' && $ak<='4'){
 				$ack=$ak;
@@ -1228,8 +1240,12 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 // style="word-wrap:break-word;-webkit-hyphens:none;-moz-hyphens:none;hyphens:none;" to remove auto-hyphenate
 	if($error_string>''){
 		$top_output.="<font style='color:$error_color; background-color: white;'>";
+//		$top_output.='<STRONG>#'.$GLOBALS['bus311mtd_instance'].'.</STRONG> '.$full_short_code;
 		$top_output.='<STRONG>#'.$GLOBALS['bus311mtd_instance'].'.</STRONG> '.htmlspecialchars($full_short_code);
 		$top_output.="<br><STRONG>Non-Fatal Error</STRONG> (".__LINE__.")<br>".substr($error_string,2);
+		if(strpos($full_short_code,'&#8221;')>0 && !get_option('bus311mtd_disable_wptexturize')){
+			$top_output.="<BR>You might try disabling <I>wptexturize</I> under Settings.";
+		};
 		$top_output.='</font>';
 		$top_output.="<BR>";
 	}else if($echo_in=='0' || $echo_in=='comment'){
@@ -1336,7 +1352,10 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								$dir.=$dirs[$d].'/';
 								if(!is_dir($dir)){mkdir($dir);};
 							};
-							move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
+// do not allow \.(sh|asp|cgi|php|php3|ph3|php4|ph4|php5|ph5|phtm|phtml)$
+							
+//							if(!strpos(substr($target_Pathfile,-6,6),'.php')) move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
+							if(!preg_match($rejectFiles,$target_Pathfile)) move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
 							$set.=", `$key`='".$target_Pathfile."'";
 							$wh.=" AND `$key`='".$target_Pathfile."'";
 							if(strpos(' ,'.$acknowledgePosted,",$key,")){$updateString.=" ".$fname;};
@@ -1505,7 +1524,8 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 						if($oldValue>'' && substr($oldValue,0,strlen($target_Path))==$target_Path){
 							unlink($oldValue);
 						};
-						move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
+//						if(!strpos(substr($target_Pathfile,-6,6),'.php')) move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
+						if(!preg_match($rejectFiles,$target_Pathfile)) move_uploaded_file( $_FILES[$key_]['tmp_name'], $target_Pathfile );
 						$set.=", `$key`='".$target_Pathfile."'";
 						$numUpdates+=1;
 					};
@@ -2003,7 +2023,7 @@ function bus311tabledisplay_function($pval,$incomingfromhandler,$content) {
 								$styls=split(',',$input_styles_in);
 								$input_style='';
 								for($i=0;$i<count($ordr);$i+=1){
-									if($ordr[$i]==$key){
+									if(trim($ordr[$i])==trim($key)){
 										$input_style=$styls[$i];
 									};
 								};

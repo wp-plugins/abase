@@ -19,7 +19,7 @@ The ABASE shortcode with a list of all the optional attributes is shown next. Ea
 <P>
 [abase ack="" alink="" center="" cols="" columns="" database="" db="" echo="" elements="" emailbcc="" emailcc="" emailfrom="" emailorigin="" emailsubject="" emailto="" fields="" files="" form="" from="" group="" images="" insert="" left="" limit="" notable="" notitle="" or="" order="" password="" required="" right="" rlink="" rownum="" search="" select="" sql="" style="" table="" update="" where=""]
 <P>
-Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <strong>sql</strong>, <strong>from</strong>, or <strong>table</strong> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <strong>emailto</strong> attribute. The attribute names must be lower case. Characters <code>&lt;</code> and <code>&gt;</code> are illegal within the quotes. The <code>&lt</code> must be replaced with <code>&amp;lt;</code> and <code>&gt;</code> must be replaced with <code>&amp;gt;</code>.
+Within the quotes of each attribute can be a parameter value or a list of values separated by commas (,). Empty fields need not be specified. An unrecognized attribute is ignored. Using the shortcode with no (recognizable) attributes ([abase]) lists the database user, database, tables with record counts for the current database. Otherwise, either the <strong>sql</strong>, <strong>from</strong>, or <strong>table</strong> attribute should be used to specify part or all of a database operation, or an email sent, using at least an <strong>emailto</strong> attribute. The attribute names must be lower case. If you are using <code>&lt;</code> or <code>&gt;</code> within the quotes, be sure to disable wptexturization.
 <P>
 ABASE shortcodes can also be of the form [abase ...]&lt;content&gt;[/abase]. In this form, &lt;content&gt; will be displayed above what [abase ...] produces. The shortcode name "abase" can be all lower-case or all upper-case but not mixed case. Each functions identically but are treated separately. Note that when including a closing shortcode, it must be case identical. &lt;content&gt; can include ABASE tags as long as the alternate case is used. Embedding shortcodes in content is useful when using ABASE to send emails from your website.
 <h3>Databases</h3>
@@ -47,7 +47,7 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>emailto</strong> - emailto="" specify email recipient. Either a specific email address or a column name that contains an email address. Only one email can be sent per shortcode execution.
 	<li><strong>fields</strong> - fields=" &lt;field_spec&gt; ( , &lt;field_spec&gt; )" - Specifies the column names to be displayed in record view. Record view is a two column table with the field names in the first column and the values in the second column.
 		<ul><li>Meta language: terms in parentheses are optional, vertical bar (|) - OR operator. (Exception - vertical bar (|) preceded &lt;foreign_column&gt;.)
-			<li>&lt;field_spec&gt; ::= ( &lt;column_title&gt;^ ) &lt;column_name&gt; ( |&lt;foreign_column&gt; ) ( ! ( '( &lt;element_type&gt; &lt;space&gt; ) &lt;element_style&gt;' ) ) ( [&gt;|&gt;=|=|&lt;=|&lt;|!=] ( % ) &lt;operand&gt; ) ( % ) ( $ ( &lt;button_value&gt; ) ) &nbsp; &nbsp; <strong>Note:</strong> characters <code>&lt;</code> and <code>&gt;</code> are illegal for less-than or greater-than in an expression, so replace <code>&lt</code> with <code>&amp;lt;</code> and <code>&gt;</code> with <code>&amp;gt;</code>.
+			<li>&lt;field_spec&gt; ::= ( &lt;column_title&gt;^ ) &lt;column_name&gt; ( |&lt;foreign_column&gt; ) ( ! ( '( &lt;element_type&gt; &lt;space&gt; ) &lt;element_style&gt;' ) ) ( [&gt;|&gt;=|=|&lt;=|&lt;|!=] ( % ) &lt;operand&gt; ) ( % ) ( $ ( &lt;button_value&gt; ) ) &nbsp; &nbsp; <strong>Note:</strong> If you are using <code>&lt;</code> or <code>&gt;</code>, be sure to disable wptexturization.
 			<li>&lt;operand&gt; ::= &lt;surrogate&gt; | &lt;integer&gt; | ' &lt;constant&gt; '
 			<li>&lt;column_title&gt; = optionally precedes &lt;column_name&gt; using a carrot (^) character. It replaces &lt;column_name&gt; as column title in table view and field name in record view.
 			<li>&lt;column_name&gt; = name of a column returned from the SELECT
@@ -95,11 +95,11 @@ In addition to [abase] and [ABASE] shortcodes, two more are available. Shortcode
 	<li><strong>rownum</strong> - rownum="1" will add line numbers to the display tables.
 	<li><strong>search</strong> - search="" (depreciated. Use form="search".)
 	<li><strong>select</strong> - Specifies the select_expr clause in the MySQL SELECT statement. Default is * (all columns).
-	<li><strong>sql</strong> - Specifies a complete MySQL statement to be executed. Characters <code>&lt;</code> and <code>&gt;</code> are illegal for less-than or greater-than in an expression, so replace <code>&lt</code> with <code>&amp;lt;</code> and <code>&gt;</code> with <code>&amp;gt;</code>.
+	<li><strong>sql</strong> - Specifies a complete MySQL statement to be executed. If you are using <code>&lt;</code> or <code>&gt;</code>, be sure to disable wptexturization.
 	<li><strong>style</strong> - This will specify a style="" attribute for the table that encloses the shortcode display.
 	<li><strong>table</strong> - Specifies the database table to be searched or updated.
 	<li><strong>update</strong> - update="" (depreciated. Use form="update".)
-	<li><strong>where</strong> - Specifies the where_condition clause in the MySQL SELECT statement. If it begins with "AND " or "OR " it will be concatenated to (instead of overridding) any other where expression. Characters <code>&lt;</code> and <code>&gt;</code> are illegal for less-than or greater-than in an expression, so replace <code>&lt</code> with <code>&amp;lt;</code> and <code>&gt;</code> with <code>&amp;gt;</code>.
+	<li><strong>where</strong> - Specifies the where_condition clause in the MySQL SELECT statement. If it begins with "AND " or "OR " it will be concatenated to (instead of overridding) any other where expression. Be sure to disable wptexturization if you are using <code>&lt;</code> or <code>&gt;</code>.
 </ul>
 <h3>Displaying Fields</h3>
 <ul>
@@ -286,6 +286,10 @@ A password on a record will prevent updates or deletions to the record without a
 
 == Changelog ==
 
+= 2.5 =
+
+Added disable wptexturization making using &lt; or &gt; in attribute specifications easier. Database names now default to the user name prefix when only one database setting is displayed. Spaces around commas in attributes now allowed. PHP files are no longer uploadable.
+
 = 2.4 =
 
 Added html_entity_decode() to all database related attributes that could contain &lt; or &gt; for less-than or greater-than. Use <code>&amp;lt;</code> for &lt; and <code>&amp;gt;</code> for &gt;. notable="0" forces a column title when the table output is only one row and one column.
@@ -355,6 +359,10 @@ Documentation corrections and clarifications. New versioning for WordPress.
 First version available through WordPress.
 
 == Upgrade notice ==
+
+= 2.5 =
+
+Added disable wptexturization making using &lt; or &gt; in attribute specifications easier. Database names now default to the user name prefix when only one database setting is displayed. Spaces around commas in attributes now allowed. PHP files are no longer uploadable.
 
 = 2.4 =
 

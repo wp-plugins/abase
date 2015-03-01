@@ -14,7 +14,12 @@
 		$db1ok.=$_POST['bus311mtd_dbpwd2'].$_POST['bus311mtd_dbpwd3'];
 		$db1ok.=$_POST['bus311mtd_dbfiles2'].$_POST['bus311mtd_dbfiles3'];
 		$cusrlen=strlen($cusr)+1;
+		$wpdbname=DB_NAME; $wpdbnamePrefix=substr($wpdbname,0,strpos($wpdbname,'_'));
+		$wpdbuser=DB_USER;$wpdbuserPrefix=substr($wpdbuser,0,strpos($wpdbuser,'_'));
+		$cpanelUser='';
+		if(strlen($wpdbnamePrefix)>0 && $wpdbnamePrefix==$wpdbuserPrefix){$cpanelUser=$wpdbnamePrefix;};
 
+/*
 // do not allow switching from show=3 to show=1 
 // if 
 // any database name does not start with $cusr.'_' or
@@ -22,6 +27,10 @@
 //
 // any database2 parameter not blank or
 // any database3 parameter not blank
+
+if(dbshow_old==0 && 
+
+*/
 
 		if($_POST['bus311mtd_hidden'] == 'Y') {  
 			//Form data sent  
@@ -31,11 +40,17 @@
 // from 1 database to 1 database or from 1 database to 3 databases
 				$dbname_nu=$_POST['bus311mtd_dbname_nu'];
 				$dbname='';
-				if($dbname_nu>''){$dbname=$cusr.'_'.$dbname_nu; $dbname=$dbname_nu;};
+				if($dbname_nu>''){
+					$dbname=$cusr.'_'.$dbname_nu;
+//					$dbname=$dbname_nu;
+				};
 				update_option('bus311mtd_dbname', $dbname);  
 				$dbuser_nu=$_POST['bus311mtd_dbuser_nu'];
 				$dbuser='';
-				if($dbuser_nu>''){$dbuser=$cusr.'_'.$dbuser_nu; $dbuser=$dbuser_nu;};
+				if($dbuser_nu>''){
+					$dbuser=$cusr.'_'.$dbuser_nu;
+//					$dbuser=$dbuser_nu;
+				};
 				update_option('bus311mtd_dbuser', $dbuser);
 				$dbpwd = $_POST['bus311mtd_dbpwd'];
 				if($dbuser==''){
@@ -87,6 +102,7 @@
 					update_option('bus311mtd_show', $dbshow);
 				};
 			};
+			$disable_wptexturize=$_POST['bus311mtd_disable_wptexturize']; update_option('bus311mtd_disable_wptexturize', $disable_wptexturize);
 			$form_min=$_POST['bus311mtd_form_min'];	update_option('bus311mtd_form_min', $form_min);
 			$form_max=$_POST['bus311mtd_form_max'];	update_option('bus311mtd_form_max', $form_max);
 			?>  
@@ -98,6 +114,13 @@
 
 
 		$dbshow='';if(get_option('bus311mtd_show')){$dbshow = get_option('bus311mtd_show');}else{update_option('bus311mtd_show', '');};
+
+		$disable_wptexturize='';
+		if(get_option('bus311mtd_disable_wptexturize')){
+			$disable_wptexturize = get_option('bus311mtd_disable_wptexturize');
+		}else{
+			update_option('bus311mtd_disable_wptexturize', '');
+		};
 
 		$form_min='';if(get_option('bus311mtd_form_min')){$form_min = get_option('bus311mtd_form_min');}else{update_option('bus311mtd_form_min', '0');};
 		$form_max='';if(get_option('bus311mtd_form_max')){$form_max = get_option('bus311mtd_form_max');}else{update_option('bus311mtd_form_max', '0');};
@@ -143,7 +166,7 @@
 		<?php 
 				$lp=1;$fs=0;
 				if($dbshow>0){$lp=3;$fs=1;};
-				$fsX=1; //remove default user name for cPanel
+//				$fs=1; //remove default user name for cPanel
 				for($i=1;$i<=$lp;$i+=1){
 					if($i==1){
 						$dbn='';
@@ -171,7 +194,7 @@
 						$dfiles=$dbfiles3;
 					};
 		?>			<table>
-		<?php 			if($i==1){
+<?php 			if($i==1){
 		?>
 					
 					<tr>
@@ -179,15 +202,22 @@
 						<td colspan=2 align=left>&nbsp;</td>
 					</tr>
 					<tr>
+						<td align=right bgcolor="DDDDDD">Texturization:</td>
+						<td>&nbsp;<input type="checkbox" name="bus311mtd_disable_wptexturize" value="1" <?php if($disable_wptexturize=='1') echo 'checked'; ?>>Disable wptexturize</td>
+						<td colspan=2>Disable wptexturize if you are using less than or greater than symbols in your attributes (&lt; or &gt;), for example, in an SQL WHERE clause.
+						<?php echo $cusr; ?>
+						</td>
+					</tr>
+					<tr>
 						<td align=right bgcolor="DDDDDD">Form Life:</td>
-						<td><nobr>Min:<input type="text" name="bus311mtd_form_min" size="1" value="<?php echo $form_min; ?>">,</nobr> <nobr>Max:<input type="text" name="bus311mtd_form_max" size="2" value="<?php echo $form_max; ?>"></nobr>
+						<td><nobr>Min:<input type="text" name="bus311mtd_form_min" size="1" value="<?php echo $form_min; ?>">,</nobr> <nobr>Max:<input type="text" name="bus311mtd_form_max" size="2" value="<?php echo $form_max; ?>"></nobr></td>
 						<td colspan=2>in Seconds. Valid form life. Before or afterwards, Insert, Update or Delete<BR>form not valid and database update will not occur. Set Max to 0 for non-enforcement.
 						</td>
 					</tr>
 
 					<tr>
 						<td colspan=2><h3>Database Settings:</h3></td>
-						<td colspan=2 align=left><input type="checkbox" name="bus311mtd_show" value="1" <?php  if($dbshow>0){echo "checked"; }; ?>>Expand to full settings
+						<td colspan=2 align=left><table><tr><td><input type="checkbox" name="bus311mtd_show" value="1" <?php  if($dbshow>0){echo "checked"; }; ?>>Expand to full settings (3 databases)</td><td><?php  submit_button() ?></td></tr></table>
 						</td>
 					</tr>
 		<?php 					
@@ -195,25 +225,27 @@
 						echo "<h3>Database Settings$sdbn:</h3>";
 					};
 					$dname_nouser=$dname;
-//					if(substr($dname,0,strlen($cusr)+1)==$cusr.'_'){$dname_nouser=substr($dname,strlen($cusr)+1);};
+					if(substr($dname,0,strlen($cusr)+1)==$cusr.'_'){$dname_nouser=substr($dname,strlen($cusr)+1);};
 					$wp_dname_nouser=DB_NAME;
-//					if(substr($wp_dname_nouser,0,strlen($cusr)+1)==$cusr.'_'){$wp_dname_nouser=substr($wp_dname_nouser,strlen($cusr)+1);};
+					if(substr($wp_dname_nouser,0,strlen($cusr)+1)==$cusr.'_'){$wp_dname_nouser=substr($wp_dname_nouser,strlen($cusr)+1);};
 					$duser_nouser=$duser;
-//					if(substr($duser,0,strlen($cusr)+1)==$cusr.'_'){$duser_nouser=substr($duser,strlen($cusr)+1);};
+					if(substr($duser,0,strlen($cusr)+1)==$cusr.'_'){$duser_nouser=substr($duser,strlen($cusr)+1);};
 					$wp_duser_nouser=DB_USER;
-//					if(substr($wp_duser_nouser,0,strlen($cusr)+1)==$cusr.'_'){$wp_duser_nouser=substr($wp_duser_nouser,strlen($cusr)+1);};
+					if(substr($wp_duser_nouser,0,strlen($cusr)+1)==$cusr.'_'){$wp_duser_nouser=substr($wp_duser_nouser,strlen($cusr)+1);};
 
 					if($dbshow>0){	?>
 						<tr><td align=right bgcolor="DDDDDD">Database host<?php echo $sdbn;?>:</td>
 							<td><input type="text" name="bus311mtd_dbhost<?php echo $dbn;?>" value="<?php echo $dhost; ?>" size="20"></td>
 							<td colspan=2>leave blank unless you know specifically otherwise (<?php  echo "default: ".DB_HOST; ?>)</td>
 						</tr>
-		<?php 			};	?>
+<?php 				};	?>
 						<tr><td align=right bgcolor="DDDDDD">Database name<?php echo $sdbn;?>:</td>
-							<td><?php 
-						if(!$fs){
-						//	echo $cusr.'_';
-							?><input type="text" name="bus311mtd_dbname_nu<?php echo $dbn;?>" value="<?php echo $dname_nouser; ?>" size="20"><?php  }else{ ?><input type="text" name="bus311mtd_dbname<?php echo $dbn;?>" value="<?php echo $dname; ?>" size="20"><?php  }; ?></td>
+							<td><nobr>
+						<?php if(!$fs){ echo $cusr.'_'; ?><input type="text" name="bus311mtd_dbname_nu<?php echo $dbn;?>" value="<?php echo $dname_nouser; ?>" size="10">
+						<?php  }else{ ?>
+							<input type="text" name="bus311mtd_dbname<?php echo $dbn;?>" value="<?php echo $dname; ?>" size="20">
+						<?php  }; ?>
+							</nobr></td>
 							<td><?php  echo " leave blank for WordPress database (".DB_NAME.")"; ?></td>
 <?php  if($create_databases==1){ ?> 
 							<td>(required only if creating new database)</td>
@@ -225,9 +257,11 @@
 <?php  }; ?>
 						</tr>  
 						<tr><td align=right bgcolor="DDDDDD">Database user<?php echo $sdbn;?>:</td>
-							<td><?php  if(!$fs){
-							//echo $cusr.'_';
-							?><input type="text" name="bus311mtd_dbuser_nu<?php echo $dbn;?>" value="<?php echo $duser_nouser; ?>" size="20"><?php  }else{ ?><input type="text" name="bus311mtd_dbuser<?php echo $dbn;?>" value="<?php echo $duser; ?>" size="20"><?php  }; ?></td>
+							<td><?php  if(!$fs){ echo $cusr.'_'; ?><input type="text" name="bus311mtd_dbuser_nu<?php echo $dbn;?>" value="<?php echo $duser_nouser; ?>" size="10">
+								<?php  }else{ ?>
+									<input type="text" name="bus311mtd_dbuser<?php echo $dbn;?>" value="<?php echo $duser; ?>" size="20">
+								<?php  }; ?>
+							</td>
 							<td colspan=2><?php  echo " leave blank if Database name is blank or the WordPress user (".DB_USER.") has permissions to access this database."; ?></td>
 							<td></td>
 						</tr>  
@@ -245,7 +279,7 @@
 							</td></tr></table>
 							</td>
 						</tr>
-						<?php  }; ?>
+				<?php  }; ?>
 					</table>
 		<?php 	
 				}; // for loop
